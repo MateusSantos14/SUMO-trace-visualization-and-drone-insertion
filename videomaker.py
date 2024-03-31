@@ -49,13 +49,23 @@ def generate_video_with_vector_coordinates_image(vector_coordinates,directory_vi
 
     #colors
     colors = [
-    'red', 'blue', 'green', 'orange', 'purple', 
-    'dark red', 'light red', 'crimson', 
-    'navy blue', 'sky blue', 'royal blue', 
-    'forest green', 'lime green', 'olive', 
-    'dark orange', 'amber', 'coral', 
-    'violet', 'lavender', 'magenta'
-    ]
+    'red', 'blue', 'green', 'orange', 'purple',
+    '#8B0000',  # Dark Red
+    '#FF6347',  # Tomato (light red)
+    'crimson',
+    'navy',
+    '#87CEEB',  # Sky Blue
+    'royalblue',
+    '#228B22',  # Forest Green
+    '#00FF00',  # Lime Green
+    'olive',
+    '#FF8C00',  # Dark Orange
+    '#FFBF00',  # Amber
+    'coral',
+    'violet',
+    'lavender',
+    'magenta'
+    ]   
     substitle_list = []
 
     #Unpack the coordinates
@@ -80,9 +90,8 @@ def generate_video_with_vector_coordinates_image(vector_coordinates,directory_vi
 
     cx.add_basemap(ax, crs=scenario.crs, source=cx.providers.OpenStreetMap.Mapnik)
 
-    print(color_list)
-
     zeros_vector = [0]*len(coordinates_list)
+
     points = ax.scatter(zeros_vector.copy(), zeros_vector.copy(), color=color_list, marker='o',s=20)
 
     total_number_of_frames = len(coordinates_list[0])
@@ -99,11 +108,10 @@ def generate_video_with_vector_coordinates_image(vector_coordinates,directory_vi
 
         x_values = [point[frame][0] for point in coordinates_list]
         y_values = [point[frame][1] for point in coordinates_list]
+        
+        points.set_offsets(np.column_stack((x_values, y_values)))  
 
-        points.set_offsets(np.column_stack((x_values, y_values)))
-
-        #print(frame)
-
+        print(f"{round(frame/total_number_of_frames*100,2)}%")#Percentage of conclusion
         return points,
 
     ani = FuncAnimation(fig, update, frames=range(0, total_number_of_frames, 1), init_func=init, interval=100)#Configuração do vídeo

@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
 from Vehicle import *
-from videomaker import generate_video_with_vector_coordinates_image
+from Videomaker import generate_video_with_vector_coordinates_image
 from creating_drones import create_drone_following_object,create_drone_circular_point
 
 class Simulation:
