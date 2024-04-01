@@ -1,6 +1,6 @@
 # Vehicle Simulation
 
-This repository contains a Python-based simulation framework for tracking vehicles and drones within a specified environment. The simulation reads vehicle trace data from an XML file, supports dynamic interaction with vehicles, and can generate both visual and data outputs.
+This repository contains a Python and Sumo based simulation framework for tracking vehicles and drones within a specified environment. The simulation reads vehicle trace data from an XML file, and can generate both visual and data outputs.
 
 ## Features
 
