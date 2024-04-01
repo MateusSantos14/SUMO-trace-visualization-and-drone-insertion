@@ -132,6 +132,10 @@ class Simulation:
     def addVehicle(self,vehicle):
         if vehicle.id() in self.vehicleList.keys():
             raise ValueError("ID already exists.")
+        else:
+            self.vehicleList[vehicle.id()]
+            if vehicle.type() not in self.typeList:
+                self.typeList[vehicle.type()] = vehicle.type()
 
     #Debug tools
     def print_all_vehicle_info(self,vehicle_id):

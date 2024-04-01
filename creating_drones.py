@@ -38,7 +38,7 @@ def generate_drone_coordinates(vehicle_coordinates, offset_distance,  smoothing_
             first_non_zero_coordinate = True
             drone_coordinates.append((vehicle_position[0], vehicle_position[1]))
 
-        #if not first_non_zero_coordinate:
+        # If not first_non_zero_coordinate:
         if vehicle_position == (0, 0):
             drone_coordinates.append((0, 0))
             continue

@@ -1,4 +1,37 @@
 class Vehicle:
+    """
+    The Vehicle class is designed to store and manage vehicle trace information.
+
+    Attributes:
+    - _id (str): The unique identifier for the vehicle.
+    - _type (str): The type of the vehicle.
+    - timesteps (dict): A dictionary storing Timestep objects, indexed by time (as integers).
+
+    Methods:
+    - __init__(self, id: str, type: str):
+    Initializes a new Vehicle instance with the specified ID and type.
+    
+    - add_timestep(self, time: str, x: str, y: str, angle: str, speed: str, pos: str, lane: str, slope: str):
+    Adds a new timestep to the vehicle's history, converting string inputs into appropriate data types where necessary.
+    
+    - get_timestep(self, time: int) -> Timestep | None:
+    Retrieves the Timestep object for a given time if it exists; otherwise, returns None.
+    
+    - get_timestep_dict(self, time: int) -> dict | None:
+    Returns a dictionary representation of a Timestep for a given time if it exists; otherwise, returns None.
+    
+    - print_timestep(self, time: int):
+    Prints the dictionary representation of a Timestep for a given time if it exists.
+    
+    - is_present(self, time: int) -> bool:
+    Checks if there's a Timestep for a given time, returning True if present; otherwise, False.
+    
+    - id(self) -> str:
+    Returns the vehicle's ID.
+    
+    - type(self) -> str:
+    Returns the vehicle's type.
+    """
     def __init__(self,id,type):
         self._id = id
         self._type = type
