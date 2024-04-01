@@ -75,6 +75,49 @@ class Vehicle:
 
 
 class Timestep:
+    """
+    Timestep Class:
+
+    Encapsulates the state of a vehicle at a specific moment in time, detailing its position, orientation, and motion attributes.
+
+    Attributes:
+    - _time (int): Time point of the timestep.
+    - _x (float): X-coordinate of the vehicle's position.
+    - _y (float): Y-coordinate of the vehicle's position.
+    - _angle (float): Vehicle's orientation angle.
+    - _speed (float): Vehicle's speed.
+    - _pos (float): Position indicator, detailed meaning depends on the application context.
+    - _lane (str): Lane of the vehicle, interpretation depends on the application.
+    - _slope (float): Road slope or vehicle inclination angle.
+
+    Methods:
+    - __init__(self, time, x, y, angle, speed, pos, lane, slope):
+    Initializes a Timestep with position, orientation, and motion details.
+    
+    - time(self) -> float:
+    Returns the time point of this timestep.
+    
+    - x(self) -> float:
+    Returns the x-coordinate of the vehicle's position.
+    
+    - y(self) -> float:
+    Returns the y-coordinate of the vehicle's position.
+    
+    - angle(self) -> float:
+    Returns the vehicle's orientation angle.
+    
+    - speed(self) -> float:
+    Returns the vehicle's speed.
+    
+    - pos(self):
+    Returns a position indicator of the vehicle.
+    
+    - lane(self):
+    Returns the lane of the vehicle.
+    
+    - slope(self) -> float:
+    Returns the slope of the road or vehicle inclination.
+    """
     def __init__(self,time,x,y,angle,speed,pos,lane,slope):
             self._time = time
             self._x = x
