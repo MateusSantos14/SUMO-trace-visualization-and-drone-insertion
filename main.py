@@ -17,5 +17,5 @@ simulacao.export_to_video("simulation_video")
 
 #Test Luxemburgo Scenario
 #sumo -c C:\Users\Pichau\Desktop\LuSTScenario-master\scenario\dua.static.sumocfg --fcd-output C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\main.py --fcd-output.geo true
-#simulacao = Simulation("Traces/outputwithlimits.xml")
-#simulacao.export_to_video("VideoGenerated/simulation_video")
+simulacao = Simulation("Traces/outputwithlimits.xml")
+simulacao.export_to_video("VideoGenerated/simulation_video")

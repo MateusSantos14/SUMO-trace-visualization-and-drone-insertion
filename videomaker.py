@@ -41,11 +41,11 @@ def _create_dataframe(vector_coordinates):
 
     data_frame = gpd.GeoDataFrame(data, crs="EPSG:4326")
     print("Build1")
-    return data_frame
+    return data_frame,(max_x-min_x)/(max_y-min_y)
 
 def generate_video_with_vector_coordinates_image(vector_coordinates,directory_video,names=[]):
     
-    scenario = _create_dataframe(vector_coordinates)
+    scenario,proportion = _create_dataframe(vector_coordinates)
 
     #colors
     colors = [
@@ -80,7 +80,8 @@ def generate_video_with_vector_coordinates_image(vector_coordinates,directory_vi
             substitle_list.append(names[i])
             
     # Draw the map
-    fig, ax = plt.subplots(figsize=(10, 10), dpi=100)
+    #fig, ax = plt.subplots(figsize=(10, 10), dpi=100)
+    fig, ax = plt.subplots(figsize=(10*proportion, 10), dpi=100)
 
     scenario.plot(ax=ax, alpha=0)
 
