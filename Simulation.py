@@ -3,7 +3,7 @@ from xml.dom import minidom
 
 from Vehicle import *
 from videomaker import generate_video_with_vector_coordinates_image
-from creating_drones import create_drone_following_object,create_drone_circular_point
+from creating_drones import create_drone_following_object,create_drone_circular_point,create_drone_tractor_pattern,create_drone_square_pattern
 
 class Simulation:
     def __init__(self, trace_path):
@@ -109,22 +109,38 @@ class Simulation:
         # Write the modified XML tree to a new file
         tree.write(new_xml_path, encoding='utf-8', xml_declaration=True)
         
-    def create_drone_following(self,vehicle_id,offset_distance):
+    def create_drone_following(self,vehicle_id,offset_distance,max_speed=10):
         if vehicle_id not in self.vehicleList.keys():
             raise ValueError("ID not found in simulation.")
         vehicle = self.vehicleList[vehicle_id]
 
         self.droneNumber+=1
         
-        drone = create_drone_following_object(self.timestep_total,f"drone{self.droneNumber}",vehicle,offset_distance)
+        drone = create_drone_following_object(self.timestep_total,f"drone{self.droneNumber}",vehicle,offset_distance,max_speed=max_speed)
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
     
-    def create_drone_circular(self, center, radius_meters, angular_speed):
+    def create_drone_circular(self, center, radius_meters, max_speed = 10):
 
         self.droneNumber+=1
         
-        drone = create_drone_circular_point(self.timestep_total, f"drone{self.droneNumber}", center, radius_meters, angular_speed)
+        drone = create_drone_circular_point(self.timestep_total, f"drone{self.droneNumber}", center, radius_meters, max_speed)
+
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
+
+    def create_drone_tractor(self, start_point, width_between_tracks, max_length, max_turns, orientation, max_speed = 10):
+
+        self.droneNumber+=1
+        
+        drone = create_drone_tractor_pattern(self.timestep_total, f"drone{self.droneNumber}", start_point, width_between_tracks, max_length, max_turns, orientation, max_speed)
+
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
+    
+    def create_drone_square(self, center_point, side_length, angle_degrees, max_speed = 10):
+
+        self.droneNumber+=1
+        
+        drone = create_drone_square_pattern(self.timestep_total, f"drone{self.droneNumber}", center_point, side_length, angle_degrees, max_speed)
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
 
@@ -147,6 +163,21 @@ class Simulation:
             if timestep != None:
                 print(timestep)
 
+    def vector_with_all_coordinates(self):
+        names = list(self.typeList.keys())
+        vector_coordinates = [[] for i in names]
+        for vehicle_id in self.vehicleList.keys():
+            coordinates = []
+            vehicle_object = self.vehicleList[vehicle_id]
+            for i in range(int(float(self.timestep_total)+1)):
+                timestep = vehicle_object.get_timestep(i)
+                if timestep == None:
+                    coordinates.append((0,0))
+                else:
+                    coordinates.append((timestep.x(),timestep.y()))
+            index_in_vector_coordinates = names.index(vehicle_object.type())
+            vector_coordinates[index_in_vector_coordinates].append(coordinates)
+        return vector_coordinates
 
         
         
