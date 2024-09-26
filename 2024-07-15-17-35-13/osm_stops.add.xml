@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2024-07-15 17:36:04 by Eclipse SUMO netconvert Version 1.19.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <type-files value="${SUMO_HOME}/data/typemap/osmNetconvert.typ.xml,${SUMO_HOME}/data/typemap/osmNetconvertUrbanDe.typ.xml,${SUMO_HOME}/data/typemap/osmNetconvertPedestrians.typ.xml,${SUMO_HOME}/data/typemap/osmNetconvertBicycle.typ.xml,${SUMO_HOME}/data/typemap/osmNetconvertAerialway.typ.xml"/>
+        <osm-files value="osm_bbox.osm.xml.gz"/>
+    </input>
+
+    <output>
+        <output-file value="osm.net.xml.gz"/>
+        <output.street-names value="true"/>
+        <output.original-names value="true"/>
+        <ptstop-output value="osm_stops.add.xml"/>
+        <ptline-output value="osm_ptlines.xml"/>
+    </output>
+
+    <projection>
+        <proj.utm value="true"/>
+    </projection>
+
+    <processing>
+        <geometry.remove value="true"/>
+        <roundabouts.guess value="true"/>
+    </processing>
+
+    <tls_building>
+        <tls.discard-simple value="true"/>
+        <tls.join value="true"/>
+        <tls.guess-signals value="true"/>
+        <tls.default-type value="actuated"/>
+    </tls_building>
+
+    <ramp_guessing>
+        <ramps.guess value="true"/>
+    </ramp_guessing>
+
+    <junctions>
+        <junctions.join value="true"/>
+        <junctions.corner-detail value="5"/>
+    </junctions>
+
+    <pedestrian>
+        <crossings.guess value="true"/>
+    </pedestrian>
+
+    <railway>
+        <railway.topology.repair value="true"/>
+    </railway>
+
+    <formats>
+        <osm.bike-access value="true"/>
+        <osm.sidewalks value="true"/>
+    </formats>
+
+</configuration>
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <busStop id="-2865636511" name="Benfica" lane="-741761106_0" startPos="2557.27" endPos="2757.27" friendlyPos="true">
+        <access lane="-683619493#0_0" pos="65.78" length="33.12" friendlyPos="1"/>
+        <access lane="683619493#2_0" pos="400.72" length="36.12" friendlyPos="1"/>
+        <access lane="874199603#2_0" pos="129.03" length="104.64" friendlyPos="1"/>
+        <access lane="983711759#0_0" pos="0.00" length="102.80" friendlyPos="1"/>
+        <access lane="983711759#1_0" pos="0.00" length="103.58" friendlyPos="1"/>
+    </busStop>
+    <busStop id="-2865636521" name="Central - Chico da Silva" lane="-741761106_0" startPos="0.00" endPos="200.00" friendlyPos="true"/>
+    <busStop id="-4102886827" name="Padre Cícero" lane="-408333346_0" startPos="678.28" endPos="878.28" friendlyPos="true">
+        <access lane="-636404502#1_0" pos="23.54" length="124.01" friendlyPos="1"/>
+        <access lane="1123432598_0" pos="586.17" length="21.95" friendlyPos="1"/>
+        <access lane="1123455740#0_0" pos="96.16" length="33.42" friendlyPos="1"/>
+        <access lane="636404502#1_0" pos="39.50" length="119.17" friendlyPos="1"/>
+        <access lane="756412576_0" pos="14.78" length="39.58" friendlyPos="1"/>
+    </busStop>
+    <busStop id="-7085050924" name="São Benedito" lane="-741761106_0" startPos="1503.63" endPos="1703.63" friendlyPos="true"/>
+    <busStop id="-8984214502" name="José de Alencar" lane="-741761106_0" startPos="878.02" endPos="1078.02" friendlyPos="true"/>
+    <busStop id="2865636511" name="Benfica" lane="-408333346_0" startPos="1677.38" endPos="1877.38" friendlyPos="true">
+        <access lane="-683619493#0_0" pos="65.78" length="33.12" friendlyPos="1"/>
+        <access lane="683619493#2_0" pos="400.72" length="36.12" friendlyPos="1"/>
+        <access lane="874199603#2_0" pos="129.03" length="104.64" friendlyPos="1"/>
+        <access lane="983711759#0_0" pos="0.00" length="102.80" friendlyPos="1"/>
+        <access lane="983711759#1_0" pos="0.00" length="103.58" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2865636521" name="Central - Chico da Silva" lane="-408333346_0" startPos="4234.65" endPos="4434.65" friendlyPos="true"/>
+    <busStop id="4102886827" name="Padre Cícero" lane="-741761106_0" startPos="3556.37" endPos="3756.37" friendlyPos="true" lines="Sul">
+        <access lane="-636404502#1_0" pos="23.54" length="124.01" friendlyPos="1"/>
+        <access lane="1123432598_0" pos="586.17" length="21.95" friendlyPos="1"/>
+        <access lane="1123455740#0_0" pos="96.16" length="33.42" friendlyPos="1"/>
+        <access lane="636404502#1_0" pos="39.50" length="119.17" friendlyPos="1"/>
+        <access lane="756412576_0" pos="14.78" length="39.58" friendlyPos="1"/>
+    </busStop>
+    <busStop id="4102886828" name="Padre Cícero" lane="24302361_0" startPos="677.33" endPos="877.33" friendlyPos="true" lines="Sul">
+        <access lane="-636404502#1_0" pos="25.18" length="116.81" friendlyPos="1"/>
+        <access lane="1123432598_0" pos="585.36" length="5.78" friendlyPos="1"/>
+        <access lane="1123455740#0_0" pos="96.92" length="17.25" friendlyPos="1"/>
+        <access lane="636404502#1_0" pos="36.89" length="112.00" friendlyPos="1"/>
+        <access lane="756412576_0" pos="14.78" length="40.75" friendlyPos="1"/>
+    </busStop>
+    <busStop id="6737211147" lane="436787889#0_0" startPos="7.68" endPos="32.68" friendlyPos="true">
+        <access lane="-743679927#0_0" pos="14.45" length="4.58" friendlyPos="1"/>
+        <access lane="-743679927#1_0" pos="132.26" length="30.59" friendlyPos="1"/>
+        <access lane="717380874_0" pos="0.00" length="31.44" friendlyPos="1"/>
+        <access lane="743679927#1_0" pos="0.00" length="27.82" friendlyPos="1"/>
+        <access lane="743679927#4_0" pos="21.23" length="7.58" friendlyPos="1"/>
+    </busStop>
+    <busStop id="6943844384" name="Benfica" lane="24302361_0" startPos="1677.07" endPos="1877.07" friendlyPos="true" lines="Sul">
+        <access lane="-683619493#0_0" pos="65.49" length="39.27" friendlyPos="1"/>
+        <access lane="683619493#2_0" pos="401.01" length="42.27" friendlyPos="1"/>
+        <access lane="874199603#2_0" pos="124.98" length="103.60" friendlyPos="1"/>
+        <access lane="983711759#0_0" pos="0.00" length="103.03" friendlyPos="1"/>
+        <access lane="983711759#1_0" pos="0.00" length="104.17" friendlyPos="1"/>
+    </busStop>
+    <busStop id="6943871010" name="São Benedito" lane="24302361_0" startPos="2730.82" endPos="2930.82" friendlyPos="true" lines="Sul"/>
+    <busStop id="6943871013" name="José de Alencar" lane="24302361_0" startPos="3359.04" endPos="3559.04" friendlyPos="true" lines="Sul"/>
+    <busStop id="6943871025" name="Central - Chico da Silva" lane="24302361_0" startPos="4249.50" endPos="4449.50" friendlyPos="true" lines="Sul"/>
+    <busStop id="7085050924" name="São Benedito" lane="-408333346_0" startPos="2731.01" endPos="2931.01" friendlyPos="true"/>
+    <busStop id="8984214502" name="José de Alencar" lane="-408333346_0" startPos="3356.62" endPos="3556.62" friendlyPos="true"/>
+</additional>

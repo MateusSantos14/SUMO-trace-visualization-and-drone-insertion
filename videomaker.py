@@ -5,7 +5,7 @@ import contextily as cx#Only for image background
 from shapely.geometry import Polygon
 import geopandas as gpd
 
-def _create_dataframe(vector_coordinates):
+def _create_dataframe_default(vector_coordinates):
     min_x = 1000
     max_x = -1000
     min_y = 1000
@@ -43,9 +43,46 @@ def _create_dataframe(vector_coordinates):
     print("Build1")
     return data_frame,(max_x-min_x)/(max_y-min_y)
 
-def generate_video_with_vector_coordinates_image(vector_coordinates,directory_video,names=[]):
-    
-    scenario,proportion = _create_dataframe(vector_coordinates)
+def _create_dataframe_defined(vector_coordinates):
+    if len(vector_coordinates) != 2 or any(len(coord) != 2 for coord in vector_coordinates):
+        raise ValueError("Input should be a list with two tuples, each containing two coordinates (x, y).")
+
+    coord1, coord2 = vector_coordinates
+
+    # Extrair as coordenadas
+    x1, y1 = coord1
+    x2, y2 = coord2
+
+    # Calcular os mínimos e máximos para x e y
+    min_x = min(x1, x2)
+    max_x = max(x1, x2)
+    min_y = min(y1, y2)
+    max_y = max(y1, y2)
+
+    # Criar as coordenadas do polígono
+    coordinates_limits = [
+        (min_x, min_y),
+        (min_x, max_y),
+        (max_x, min_y),
+        (max_x, max_y)
+    ]
+
+    polygon = Polygon(coordinates_limits)
+
+    # Criar um GeoDataFrame com o polígono
+    data = {
+        "geometry": [polygon]
+    }
+
+    data_frame = gpd.GeoDataFrame(data, crs="EPSG:4326")
+
+    return data_frame, (max_x - min_x) / (max_y - min_y)
+
+def generate_video_with_vector_coordinates_image(vector_coordinates,directory_video,names=[],limits_map=0,only_vants=0):
+    if limits_map == 0:
+        scenario,proportion = _create_dataframe_default(vector_coordinates)
+    else:
+        scenario,proportion = _create_dataframe_defined(limits_map)
 
     #colors
     colors = [
@@ -68,8 +105,17 @@ def generate_video_with_vector_coordinates_image(vector_coordinates,directory_vi
     ]   
     substitle_list = []
 
-    #Unpack the coordinates
+    #Check if it is only vants
     coordinates_list = []
+    if only_vants==1:
+        coordinates_list_aux = []
+        coordinates_list_aux.append(vector_coordinates[0])
+        names_aux = []
+        names_aux.append(names[0])
+        vector_coordinates = coordinates_list_aux
+        names = names_aux
+
+    #Unpack the coordinates
     color_list = []
     substitle_list = []
     markersize_list = []

@@ -281,6 +281,42 @@ def generate_square_pattern(center_point, side_length, angle_degrees, num_sample
     return coordinates
 
 
+def generate_drone_coordinates_static(point, num_samples):
+    """
+    Generate discrete drone coordinates spinning around a specific point on Earth.
+
+    Parameters:
+    - center: Tuple (latitude, longitude) representing the center coordinates in degrees.
+    - radius_meters: Radius of the circular path in meters.
+    - num_samples: Number of discrete samples to generate.
+    - max_speed: Maximum speed of the drone in meters per second.
+
+    Returns:
+    List of tuples representing drone coordinates at different time intervals.
+    Each tuple is in the format (latitude, longitude, speed) in degrees.
+    """
+    lat_center, lon_center = point
+    coordinates = []
+
+
+    for i in range(num_samples):
+        coordinates.append((lat_center, lon_center, 0))
+
+    return coordinates
+
+
+def create_drone_static_point(timesteps, drone_id,point):
+    drone_coordinates = generate_drone_coordinates_static(point, timesteps)
+    drone = Vehicle(drone_id, "VANT")
+
+    for time in range(timesteps):
+        x_current, y_current, speed = drone_coordinates[time]
+        
+        if (x_current, y_current) != (0, 0):
+            drone.add_timestep(time, x_current, y_current, "0", round(speed, 2), "0", "0", "0")
+
+    return drone
+
 def create_drone_following_object(timesteps, drone_id, vehicle, offset_distance, max_speed):
     vehicle_data = [vehicle.get_timestep_dict(i) for i in range(timesteps + 1)]
     coordinates = [(data['x'], data['y']) if data else (0, 0) for data in vehicle_data]
@@ -288,11 +324,19 @@ def create_drone_following_object(timesteps, drone_id, vehicle, offset_distance,
     drone_coordinates = generate_drone_coordinates(coordinates, offset_distance,max_speed)
     drone = Vehicle(drone_id, "VANT")
 
-    for time in range(1, timesteps + 1):
+    first = True
+
+    for time in range(timesteps + 1):
         x_current, y_current, speed = drone_coordinates[time]
         
         if (x_current, y_current) != (0, 0):
-            drone.add_timestep(time, x_current, y_current, "0", speed, "0", "0", "0")
+            drone.add_timestep(time, x_current, y_current, "0", round(speed, 2)  , "0", "0", "0")
+            if first == True:
+                for timeIn in range(time):
+                    drone.add_timestep(timeIn, x_current, y_current, "0", round(speed, 2)  , "0", "0", "0")
+                first = False
+
+         
 
     return drone
 
@@ -304,7 +348,7 @@ def create_drone_circular_point(timesteps, drone_id, center, radius_meters, max_
         x_current, y_current, speed = drone_coordinates[time]
         
         if (x_current, y_current) != (0, 0):
-            drone.add_timestep(time, x_current, y_current, "0", speed, "0", "0", "0")
+            drone.add_timestep(time, x_current, y_current, "0", round(speed, 2), "0", "0", "0")
 
     return drone
     
@@ -316,7 +360,7 @@ def create_drone_tractor_pattern(timesteps, drone_id, start_point, width_between
         x_current, y_current, speed = drone_coordinates[time]
         
         if (x_current, y_current) != (0, 0):
-            drone.add_timestep(time, x_current, y_current, "0", speed, "0", "0", "0")
+            drone.add_timestep(time, x_current, y_current, "0", round(speed, 2), "0", "0", "0")
 
     return drone
 
@@ -328,6 +372,6 @@ def create_drone_square_pattern(timesteps, drone_id, center_point, side_length, 
         x_current, y_current, speed = drone_coordinates[time]
         
         if (x_current, y_current) != (0, 0):
-            drone.add_timestep(time, x_current, y_current, "0", speed, "0", "0", "0")
+            drone.add_timestep(time, x_current, y_current, "0", round(speed, 2), "0", "0", "0")
 
     return drone

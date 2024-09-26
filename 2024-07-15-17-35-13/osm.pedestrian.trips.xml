@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2024-07-15 17:36:12.750190 by osmWebWizard.py v1_19_0+0000-baa66a0f364
+<configuration>
+    <net-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm.net.xml.gz"/>
+    <additional-files value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm_stops.add.xml,C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm_pt.rou.xml"/>
+    <output-trip-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm.pedestrian.trips.xml"/>
+    <route-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm.pedestrian.rou.xml"/>
+    <persontrips value="True"/>
+    <persontrip.walk-opposite-factor value="0.8"/>
+    <prefix value="ped"/>
+    <trip-attributes value="modes=&quot;public&quot;"/>
+    <vehicle-class value="pedestrian"/>
+    <fringe-factor value="1"/>
+    <end value="1000.0"/>
+    <insertion-density value="10.0"/>
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vType id="ped_pedestrian" vClass="pedestrian"/>
+    <person id="ped0" depart="0.00" type="ped_pedestrian">
+        <personTrip from="1128329476#1" to="-1107751940#0" modes="public"/>
+    </person>
+    <person id="ped1" depart="7.21" type="ped_pedestrian">
+        <personTrip from="1107610157#1" to="1107608126#4" modes="public"/>
+    </person>
+    <person id="ped2" depart="14.42" type="ped_pedestrian">
+        <personTrip from="1282891310#0" to="1202375583#1" modes="public"/>
+    </person>
+    <person id="ped3" depart="21.64" type="ped_pedestrian">
+        <personTrip from="688934952#0" to="-49540883#1" modes="public"/>
+    </person>
+    <person id="ped4" depart="28.85" type="ped_pedestrian">
+        <personTrip from="1107733644#0" to="-1162811218#0" modes="public"/>
+    </person>
+    <person id="ped5" depart="36.06" type="ped_pedestrian">
+        <personTrip from="1107607829#5" to="1107754847#0" modes="public"/>
+    </person>
+    <person id="ped6" depart="43.27" type="ped_pedestrian">
+        <personTrip from="-1123453423" to="1107582694#2" modes="public"/>
+    </person>
+    <person id="ped7" depart="50.48" type="ped_pedestrian">
+        <personTrip from="1128342525#1" to="1123453428#5" modes="public"/>
+    </person>
+    <person id="ped8" depart="57.69" type="ped_pedestrian">
+        <personTrip from="1107608126#2" to="1123457674#4" modes="public"/>
+    </person>
+    <person id="ped9" depart="64.91" type="ped_pedestrian">
+        <personTrip from="446828218#4" to="-1107608730#1" modes="public"/>
+    </person>
+    <person id="ped10" depart="72.12" type="ped_pedestrian">
+        <personTrip from="446828218#0" to="1233025953#0" modes="public"/>
+    </person>
+    <person id="ped11" depart="79.33" type="ped_pedestrian">
+        <personTrip from="1107726252#1" to="-874139931#2" modes="public"/>
+    </person>
+    <person id="ped12" depart="86.54" type="ped_pedestrian">
+        <personTrip from="866958562" to="1107726251#0" modes="public"/>
+    </person>
+    <person id="ped13" depart="93.75" type="ped_pedestrian">
+        <personTrip from="-589880254" to="-590528030#1" modes="public"/>
+    </person>
+    <person id="ped14" depart="100.96" type="ped_pedestrian">
+        <personTrip from="638225530" to="1123458090#0" modes="public"/>
+    </person>
+    <person id="ped15" depart="108.18" type="ped_pedestrian">
+        <personTrip from="446828218#1" to="1282891306#4" modes="public"/>
+    </person>
+    <person id="ped16" depart="115.39" type="ped_pedestrian">
+        <personTrip from="1123453419#1" to="874139937#1" modes="public"/>
+    </person>
+    <person id="ped17" depart="122.60" type="ped_pedestrian">
+        <personTrip from="1107729877#0" to="1123454303#0" modes="public"/>
+    </person>
+    <person id="ped18" depart="129.81" type="ped_pedestrian">
+        <personTrip from="590528030#1" to="1123471297#0" modes="public"/>
+    </person>
+    <person id="ped19" depart="137.02" type="ped_pedestrian">
+        <personTrip from="638225545#2" to="1123456906#4" modes="public"/>
+    </person>
+    <person id="ped20" depart="144.23" type="ped_pedestrian">
+        <personTrip from="1282891300#1" to="-1163723742#0" modes="public"/>
+    </person>
+    <person id="ped21" depart="151.45" type="ped_pedestrian">
+        <personTrip from="1107608128#1" to="1107610622#1" modes="public"/>
+    </person>
+    <person id="ped22" depart="158.66" type="ped_pedestrian">
+        <personTrip from="-281346540#2" to="1107608131#0" modes="public"/>
+    </person>
+    <person id="ped23" depart="165.87" type="ped_pedestrian">
+        <personTrip from="-663577413" to="1107610159#0" modes="public"/>
+    </person>
+    <person id="ped24" depart="173.08" type="ped_pedestrian">
+        <personTrip from="1128329473#2" to="1107728263#6" modes="public"/>
+    </person>
+    <person id="ped25" depart="180.29" type="ped_pedestrian">
+        <personTrip from="1107728265#1" to="1107607827#7" modes="public"/>
+    </person>
+    <person id="ped26" depart="187.50" type="ped_pedestrian">
+        <personTrip from="1107609768#5" to="739013021#2" modes="public"/>
+    </person>
+    <person id="ped27" depart="194.72" type="ped_pedestrian">
+        <personTrip from="1128333483#1" to="1123458092#1" modes="public"/>
+    </person>
+    <person id="ped28" depart="201.93" type="ped_pedestrian">
+        <personTrip from="1107555897#2" to="1282891306#4" modes="public"/>
+    </person>
+    <person id="ped29" depart="209.14" type="ped_pedestrian">
+        <personTrip from="1046231849#1" to="1107729877#1" modes="public"/>
+    </person>
+    <person id="ped30" depart="216.35" type="ped_pedestrian">
+        <personTrip from="915224610#2" to="1128329476#1" modes="public"/>
+    </person>
+    <person id="ped31" depart="223.56" type="ped_pedestrian">
+        <personTrip from="1123455740#1" to="1233025947#0" modes="public"/>
+    </person>
+    <person id="ped32" depart="230.77" type="ped_pedestrian">
+        <personTrip from="638225527#1" to="281346540#4" modes="public"/>
+    </person>
+    <person id="ped33" depart="237.99" type="ped_pedestrian">
+        <personTrip from="1107608129#0" to="-1162811219" modes="public"/>
+    </person>
+    <person id="ped34" depart="245.20" type="ped_pedestrian">
+        <personTrip from="1107610626#8" to="1107609768#6" modes="public"/>
+    </person>
+    <person id="ped35" depart="252.41" type="ped_pedestrian">
+        <personTrip from="1107607827#8" to="739013029#0" modes="public"/>
+    </person>
+    <person id="ped36" depart="259.62" type="ped_pedestrian">
+        <personTrip from="663577417#1" to="1107610626#7" modes="public"/>
+    </person>
+    <person id="ped37" depart="266.83" type="ped_pedestrian">
+        <personTrip from="1162811220#0" to="1107733635#1" modes="public"/>
+    </person>
+    <person id="ped38" depart="274.04" type="ped_pedestrian">
+        <personTrip from="727366690" to="1107743520#0" modes="public"/>
+    </person>
+    <person id="ped39" depart="281.26" type="ped_pedestrian">
+        <personTrip from="1107609768#3" to="1107609762#0" modes="public"/>
+    </person>
+    <person id="ped40" depart="288.47" type="ped_pedestrian">
+        <personTrip from="1123455743" to="1107609768#1" modes="public"/>
+    </person>
+    <person id="ped41" depart="295.68" type="ped_pedestrian">
+        <personTrip from="1123456910#1" to="693895752#1" modes="public"/>
+    </person>
+    <person id="ped42" depart="302.89" type="ped_pedestrian">
+        <personTrip from="1107733635#4" to="1107608126#1" modes="public"/>
+    </person>
+    <person id="ped43" depart="310.10" type="ped_pedestrian">
+        <personTrip from="983711759#0" to="1107754852#0" modes="public"/>
+    </person>
+    <person id="ped44" depart="317.31" type="ped_pedestrian">
+        <personTrip from="-589880248" to="-1163724287" modes="public"/>
+    </person>
+    <person id="ped45" depart="324.53" type="ped_pedestrian">
+        <personTrip from="-663577416#5" to="1124518471#1" modes="public"/>
+    </person>
+    <person id="ped46" depart="331.74" type="ped_pedestrian">
+        <personTrip from="441084519" to="1107733644#1" modes="public"/>
+    </person>
+    <person id="ped47" depart="338.95" type="ped_pedestrian">
+        <personTrip from="-24395474#3" to="1107729877#3" modes="public"/>
+    </person>
+    <person id="ped48" depart="346.16" type="ped_pedestrian">
+        <personTrip from="976792635" to="1107759608#2" modes="public"/>
+    </person>
+    <person id="ped49" depart="353.37" type="ped_pedestrian">
+        <personTrip from="874139936" to="638225545#1" modes="public"/>
+    </person>
+    <person id="ped50" depart="360.58" type="ped_pedestrian">
+        <personTrip from="-1107727216#1" to="1282891305#3" modes="public"/>
+    </person>
+    <person id="ped51" depart="367.80" type="ped_pedestrian">
+        <personTrip from="1233025946#0" to="1123453419#1" modes="public"/>
+    </person>
+    <person id="ped52" depart="375.01" type="ped_pedestrian">
+        <personTrip from="1107609768#5" to="1128329477#0" modes="public"/>
+    </person>
+    <person id="ped53" depart="382.22" type="ped_pedestrian">
+        <personTrip from="-663577417#1" to="1107736391#1" modes="public"/>
+    </person>
+    <person id="ped54" depart="389.43" type="ped_pedestrian">
+        <personTrip from="1107742929#0" to="756412573#1" modes="public"/>
+    </person>
+    <person id="ped55" depart="396.64" type="ped_pedestrian">
+        <personTrip from="663577417#1" to="1107609768#2" modes="public"/>
+    </person>
+    <person id="ped56" depart="403.85" type="ped_pedestrian">
+        <personTrip from="1107754846#1" to="1107555902#0" modes="public"/>
+    </person>
+    <person id="ped57" depart="411.07" type="ped_pedestrian">
+        <personTrip from="717380876" to="663577416#0" modes="public"/>
+    </person>
+    <person id="ped58" depart="418.28" type="ped_pedestrian">
+        <personTrip from="1107610623#1" to="1128329476#0" modes="public"/>
+    </person>
+    <person id="ped59" depart="425.49" type="ped_pedestrian">
+        <personTrip from="1123458092#1" to="-866992106" modes="public"/>
+    </person>
+    <person id="ped60" depart="432.70" type="ped_pedestrian">
+        <personTrip from="281331610#0" to="1123453428#0" modes="public"/>
+    </person>
+    <person id="ped61" depart="439.91" type="ped_pedestrian">
+        <personTrip from="281346543#0" to="1107759608#3" modes="public"/>
+    </person>
+    <person id="ped62" depart="447.12" type="ped_pedestrian">
+        <personTrip from="-1007833181" to="1107726244#7" modes="public"/>
+    </person>
+    <person id="ped63" depart="454.34" type="ped_pedestrian">
+        <personTrip from="-1107736397" to="738079512" modes="public"/>
+    </person>
+    <person id="ped64" depart="461.55" type="ped_pedestrian">
+        <personTrip from="663577417#4" to="625615480#1" modes="public"/>
+    </person>
+    <person id="ped65" depart="468.76" type="ped_pedestrian">
+        <personTrip from="1107610626#0" to="-243504237#1" modes="public"/>
+    </person>
+    <person id="ped66" depart="475.97" type="ped_pedestrian">
+        <personTrip from="663577417#3" to="739013036#0" modes="public"/>
+    </person>
+    <person id="ped67" depart="483.18" type="ped_pedestrian">
+        <personTrip from="-443768938" to="1107751935#0" modes="public"/>
+    </person>
+    <person id="ped68" depart="490.39" type="ped_pedestrian">
+        <personTrip from="-281310227" to="24395474#7" modes="public"/>
+    </person>
+    <person id="ped69" depart="497.61" type="ped_pedestrian">
+        <personTrip from="281331616" to="-704987368" modes="public"/>
+    </person>
+    <person id="ped70" depart="504.82" type="ped_pedestrian">
+        <personTrip from="1107747333#0" to="1123454302#0" modes="public"/>
+    </person>
+    <person id="ped71" depart="512.03" type="ped_pedestrian">
+        <personTrip from="1107609768#4" to="663577416#2" modes="public"/>
+    </person>
+    <person id="ped72" depart="519.24" type="ped_pedestrian">
+        <personTrip from="1107733646#1" to="1107607828#0" modes="public"/>
+    </person>
+    <person id="ped73" depart="526.45" type="ped_pedestrian">
+        <personTrip from="1123453428#0" to="1282891306#5" modes="public"/>
+    </person>
+    <person id="ped74" depart="533.66" type="ped_pedestrian">
+        <personTrip from="1107582694#4" to="1107610626#4" modes="public"/>
+    </person>
+    <person id="ped75" depart="540.88" type="ped_pedestrian">
+        <personTrip from="956162342#1" to="1128342525#1" modes="public"/>
+    </person>
+    <person id="ped76" depart="548.09" type="ped_pedestrian">
+        <personTrip from="1107736393#0" to="1107757916#0" modes="public"/>
+    </person>
+    <person id="ped77" depart="555.30" type="ped_pedestrian">
+        <personTrip from="-666161993#0" to="1107608127#0" modes="public"/>
+    </person>
+    <person id="ped78" depart="562.51" type="ped_pedestrian">
+        <personTrip from="1107726251#1" to="1123457674#3" modes="public"/>
+    </person>
+    <person id="ped79" depart="569.72" type="ped_pedestrian">
+        <personTrip from="1107608129#1" to="1107608126#2" modes="public"/>
+    </person>
+    <person id="ped80" depart="576.93" type="ped_pedestrian">
+        <personTrip from="-281331610#1" to="1128329470#1" modes="public"/>
+    </person>
+    <person id="ped81" depart="584.15" type="ped_pedestrian">
+        <personTrip from="1107608129#0" to="701206509#7" modes="public"/>
+    </person>
+    <person id="ped82" depart="591.36" type="ped_pedestrian">
+        <personTrip from="638225544#1" to="-281331610#1" modes="public"/>
+    </person>
+    <person id="ped83" depart="598.57" type="ped_pedestrian">
+        <personTrip from="1107608132#3" to="1163644812" modes="public"/>
+    </person>
+    <person id="ped84" depart="605.78" type="ped_pedestrian">
+        <personTrip from="1107607829#1" to="-738079502#4" modes="public"/>
+    </person>
+    <person id="ped85" depart="612.99" type="ped_pedestrian">
+        <personTrip from="739013021#1" to="1123456905#0" modes="public"/>
+    </person>
+    <person id="ped86" depart="620.20" type="ped_pedestrian">
+        <personTrip from="1107746107#4" to="436421204#1" modes="public"/>
+    </person>
+    <person id="ped87" depart="627.42" type="ped_pedestrian">
+        <personTrip from="446828218#2" to="1107574745#1" modes="public"/>
+    </person>
+    <person id="ped88" depart="634.63" type="ped_pedestrian">
+        <personTrip from="-636404502#1" to="1107736390#3" modes="public"/>
+    </person>
+    <person id="ped89" depart="641.84" type="ped_pedestrian">
+        <personTrip from="1107733646#1" to="1107746106#0" modes="public"/>
+    </person>
+    <person id="ped90" depart="649.05" type="ped_pedestrian">
+        <personTrip from="1282891306#4" to="1163724287" modes="public"/>
+    </person>
+    <person id="ped91" depart="656.26" type="ped_pedestrian">
+        <personTrip from="914815912" to="-663577411" modes="public"/>
+    </person>
+    <person id="ped92" depart="663.47" type="ped_pedestrian">
+        <personTrip from="1107733636#1" to="1107726252#0" modes="public"/>
+    </person>
+    <person id="ped93" depart="670.69" type="ped_pedestrian">
+        <personTrip from="638225545#2" to="1107609763#0" modes="public"/>
+    </person>
+    <person id="ped94" depart="677.90" type="ped_pedestrian">
+        <personTrip from="1107574745#1" to="1107742926#1" modes="public"/>
+    </person>
+    <person id="ped95" depart="685.11" type="ped_pedestrian">
+        <personTrip from="1107733644#0" to="1107610159#1" modes="public"/>
+    </person>
+    <person id="ped96" depart="692.32" type="ped_pedestrian">
+        <personTrip from="1107609764#0" to="738079508#1" modes="public"/>
+    </person>
+    <person id="ped97" depart="699.53" type="ped_pedestrian">
+        <personTrip from="1107736395#1" to="638225545#1" modes="public"/>
+    </person>
+    <person id="ped98" depart="706.74" type="ped_pedestrian">
+        <personTrip from="1123454302#0" to="-1202375581" modes="public"/>
+    </person>
+    <person id="ped99" depart="713.96" type="ped_pedestrian">
+        <personTrip from="983711759#2" to="638225513#2" modes="public"/>
+    </person>
+    <person id="ped100" depart="721.17" type="ped_pedestrian">
+        <personTrip from="874139931#1" to="738079511#1" modes="public"/>
+    </person>
+    <person id="ped101" depart="728.38" type="ped_pedestrian">
+        <personTrip from="638225531" to="1062163235" modes="public"/>
+    </person>
+    <person id="ped102" depart="735.59" type="ped_pedestrian">
+        <personTrip from="1107751935#0" to="1107607829#0" modes="public"/>
+    </person>
+    <person id="ped103" depart="742.80" type="ped_pedestrian">
+        <personTrip from="1107733636#0" to="-243504237#2" modes="public"/>
+    </person>
+    <person id="ped104" depart="750.01" type="ped_pedestrian">
+        <personTrip from="1107729877#0" to="914821908" modes="public"/>
+    </person>
+    <person id="ped105" depart="757.23" type="ped_pedestrian">
+        <personTrip from="1107609768#4" to="436421204#1" modes="public"/>
+    </person>
+    <person id="ped106" depart="764.44" type="ped_pedestrian">
+        <personTrip from="1107742929#1" to="1107733644#1" modes="public"/>
+    </person>
+    <person id="ped107" depart="771.65" type="ped_pedestrian">
+        <personTrip from="866958562" to="956162342#1" modes="public"/>
+    </person>
+    <person id="ped108" depart="778.86" type="ped_pedestrian">
+        <personTrip from="1123455740#0" to="1282891305#0" modes="public"/>
+    </person>
+    <person id="ped109" depart="786.07" type="ped_pedestrian">
+        <personTrip from="-874139931#1" to="1107610623#0" modes="public"/>
+    </person>
+    <person id="ped110" depart="793.28" type="ped_pedestrian">
+        <personTrip from="874139931#1" to="1123456906#6" modes="public"/>
+    </person>
+    <person id="ped111" depart="800.50" type="ped_pedestrian">
+        <personTrip from="1123453428#2" to="1282891318#1" modes="public"/>
+    </person>
+    <person id="ped112" depart="807.71" type="ped_pedestrian">
+        <personTrip from="-243504237#1" to="1123456910#1" modes="public"/>
+    </person>
+    <person id="ped113" depart="814.92" type="ped_pedestrian">
+        <personTrip from="1107754846#3" to="638225533#3" modes="public"/>
+    </person>
+    <person id="ped114" depart="822.13" type="ped_pedestrian">
+        <personTrip from="-913905826" to="866989141#0" modes="public"/>
+    </person>
+    <person id="ped115" depart="829.34" type="ped_pedestrian">
+        <personTrip from="-281346540#2" to="1107555904#0" modes="public"/>
+    </person>
+    <person id="ped116" depart="836.55" type="ped_pedestrian">
+        <personTrip from="1123457786#0" to="1184830990" modes="public"/>
+    </person>
+    <person id="ped117" depart="843.77" type="ped_pedestrian">
+        <personTrip from="1107608132#0" to="-666161992" modes="public"/>
+    </person>
+    <person id="ped118" depart="850.98" type="ped_pedestrian">
+        <personTrip from="685277362#0" to="1107609762#0" modes="public"/>
+    </person>
+    <person id="ped119" depart="858.19" type="ped_pedestrian">
+        <personTrip from="1123457786#0" to="1123471297#1" modes="public"/>
+    </person>
+    <person id="ped120" depart="865.40" type="ped_pedestrian">
+        <personTrip from="1107733643#0" to="1123456909" modes="public"/>
+    </person>
+    <person id="ped121" depart="872.61" type="ped_pedestrian">
+        <personTrip from="1107757918#3" to="738079515#1" modes="public"/>
+    </person>
+    <person id="ped122" depart="879.82" type="ped_pedestrian">
+        <personTrip from="1107607827#2" to="1282891303" modes="public"/>
+    </person>
+    <person id="ped123" depart="887.04" type="ped_pedestrian">
+        <personTrip from="1107608132#4" to="1107733635#1" modes="public"/>
+    </person>
+    <person id="ped124" depart="894.25" type="ped_pedestrian">
+        <personTrip from="1163723742#0" to="1107610624#2" modes="public"/>
+    </person>
+    <person id="ped125" depart="901.46" type="ped_pedestrian">
+        <personTrip from="1107610627#1" to="243504237#2" modes="public"/>
+    </person>
+    <person id="ped126" depart="908.67" type="ped_pedestrian">
+        <personTrip from="-281331616" to="1107743519#2" modes="public"/>
+    </person>
+    <person id="ped127" depart="915.88" type="ped_pedestrian">
+        <personTrip from="983711759#1" to="976792635" modes="public"/>
+    </person>
+    <person id="ped128" depart="923.09" type="ped_pedestrian">
+        <personTrip from="-281331616" to="1107607829#0" modes="public"/>
+    </person>
+    <person id="ped129" depart="930.31" type="ped_pedestrian">
+        <personTrip from="1107609768#4" to="738079514" modes="public"/>
+    </person>
+    <person id="ped130" depart="937.52" type="ped_pedestrian">
+        <personTrip from="663577417#6" to="663577417#4" modes="public"/>
+    </person>
+    <person id="ped131" depart="944.73" type="ped_pedestrian">
+        <personTrip from="1107728265#0" to="-913905826" modes="public"/>
+    </person>
+    <person id="ped132" depart="951.94" type="ped_pedestrian">
+        <personTrip from="636404502#1" to="1282891300#0" modes="public"/>
+    </person>
+    <person id="ped133" depart="959.15" type="ped_pedestrian">
+        <personTrip from="1123471294#3" to="915224609#1" modes="public"/>
+    </person>
+    <person id="ped134" depart="966.36" type="ped_pedestrian">
+        <personTrip from="1162811219" to="-1107608730#2" modes="public"/>
+    </person>
+    <person id="ped135" depart="973.58" type="ped_pedestrian">
+        <personTrip from="520699813" to="1107610624#1" modes="public"/>
+    </person>
+    <person id="ped136" depart="980.79" type="ped_pedestrian">
+        <personTrip from="1163078067" to="739013021#5" modes="public"/>
+    </person>
+    <person id="ped137" depart="988.00" type="ped_pedestrian">
+        <personTrip from="-738079511#2" to="-663577417#5" modes="public"/>
+    </person>
+    <person id="ped138" depart="995.21" type="ped_pedestrian">
+        <personTrip from="-663577416#3" to="1123454303#1" modes="public"/>
+    </person>
+</routes>

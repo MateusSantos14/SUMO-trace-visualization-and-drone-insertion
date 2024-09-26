@@ -3,7 +3,7 @@ from xml.dom import minidom
 
 from Vehicle import *
 from videomaker import generate_video_with_vector_coordinates_image
-from creating_drones import create_drone_following_object,create_drone_circular_point,create_drone_tractor_pattern,create_drone_square_pattern
+from creating_drones import create_drone_following_object,create_drone_circular_point,create_drone_tractor_pattern,create_drone_square_pattern,create_drone_static_point
 
 class Simulation:
     def __init__(self, trace_path):
@@ -54,7 +54,7 @@ class Simulation:
         else:
             raise ValueError("ID not found in simulation.")
         
-    def export_to_video(self,video_directory):
+    def export_to_video(self,video_directory,limits_map = 0,only_vants=0):
         video_directory+=".mp4"
         names = list(self.typeList.keys())
         vector_coordinates = [[] for i in names]
@@ -70,7 +70,7 @@ class Simulation:
             index_in_vector_coordinates = names.index(vehicle_object.type())
             vector_coordinates[index_in_vector_coordinates].append(coordinates)
         
-        generate_video_with_vector_coordinates_image(vector_coordinates,video_directory,names)
+        generate_video_with_vector_coordinates_image(vector_coordinates,video_directory,names,limits_map,only_vants)
 
 
     def get_timestep_total(self):
@@ -108,7 +108,14 @@ class Simulation:
 
         # Write the modified XML tree to a new file
         tree.write(new_xml_path, encoding='utf-8', xml_declaration=True)
+    
+    def create_drone_static(self,point):
+        self.droneNumber+=1
         
+        drone = create_drone_static_point(self.timestep_total,f"drone{self.droneNumber}",point)
+
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
+
     def create_drone_following(self,vehicle_id,offset_distance,max_speed=10):
         if vehicle_id not in self.vehicleList.keys():
             raise ValueError("ID not found in simulation.")
@@ -128,7 +135,7 @@ class Simulation:
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
 
-    def create_drone_tractor(self, start_point, width_between_tracks, max_length, max_turns, orientation, max_speed = 10):
+    def create_drone_tractor(self, start_point, width_between_tracks, max_length, max_turns, orientation='horizontal', max_speed = 10):
 
         self.droneNumber+=1
         

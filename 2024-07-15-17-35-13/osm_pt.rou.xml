@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2024-07-15 17:36:07.429226 by osmWebWizard.py v1_19_0+0000-baa66a0f364
+<configuration>
+    <net-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm.net.xml.gz"/>
+    <ptlines-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm_ptlines.xml"/>
+    <ptstops-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm_stops.add.xml"/>
+    <output-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\osm_pt.rou.xml"/>
+    <stopinfos-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\stopinfos.xml"/>
+    <routes-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\vehroutes.xml"/>
+    <trips-file value="C:\Users\Pichau\Desktop\Faculdade\UFC\BOLSA\2024Project\2024-07-15-17-35-13\trips.trips.xml"/>
+    <end value="1000.0"/>
+    <min-stops value="0"/>
+    <extend-to-fringe value="True"/>
+    <random-begin value="True"/>
+    <seed value="42"/>
+    <ignore-errors value="True"/>
+    <vtype-prefix value="pt_"/>
+    <verbose value="True"/>
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vType id="pt_bus" vClass="bus"/>
+    <vType id="pt_tram" vClass="tram"/>
+    <vType id="pt_train" vClass="rail"/>
+    <vType id="pt_subway" vClass="rail_urban"/>
+    <vType id="pt_light_rail" vClass="rail_urban"/>
+    <vType id="pt_monorail" vClass="rail_urban"/>
+    <vType id="pt_trolleybus" vClass="bus"/>
+    <vType id="pt_minibus" vClass="bus"/>
+    <vType id="pt_share_taxi" vClass="taxi"/>
+    <vType id="pt_aerialway" vClass="rail_urban" length="2.5" width="2" personCapacity="4"/>
+    <vType id="pt_ferry" vClass="ship"/>
+    <route id="pt_subway_Sul:0" color="red" edges="24302361" >
+        <stop busStop="4102886828" duration="20" until="77.0"/> <!-- Padre Cícero -->
+        <stop busStop="6943844384" duration="20" until="161.0"/> <!-- Benfica -->
+        <stop busStop="6943871010" duration="20" until="247.0"/> <!-- São Benedito -->
+        <stop busStop="6943871013" duration="20" until="318.0"/> <!-- José de Alencar -->
+        <stop busStop="6943871025" duration="20" until="398.0"/> <!-- Central - Chico da Silva -->
+    </route>
+    <route id="pt_subway_Sul:1" color="red" edges="-741761106" >
+        <stop busStop="-2865636521" duration="20" until="46.0"/> <!-- Central - Chico da Silva -->
+        <stop busStop="-8984214502" duration="20" until="126.0"/> <!-- José de Alencar -->
+        <stop busStop="-7085050924" duration="20" until="197.0"/> <!-- São Benedito -->
+        <stop busStop="-2865636511" duration="20" until="283.0"/> <!-- Benfica -->
+        <stop busStop="4102886827" duration="20" until="367.0"/> <!-- Padre Cícero -->
+    </route>
+    <flow id="pt_subway_Sul:0" type="pt_subway" route="pt_subway_Sul:0" begin="15.0" end="1015.0" period="1020" line="Sul:0" >
+        <param key="name" value="Linha Sul: Carlito Benevides ⇒ Central-Chico da Silva"/>
+        <param key="completeness" value="0.25"/>
+    </flow>
+    <flow id="pt_subway_Sul:1" type="pt_subway" route="pt_subway_Sul:1" begin="383.0" end="1383.0" period="1020" line="Sul:1" >
+        <param key="name" value="Linha Sul: Central-Chico da Silva ⇒ Carlito Benevides"/>
+        <param key="completeness" value="0.25"/>
+    </flow>
+</routes>
