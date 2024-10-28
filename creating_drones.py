@@ -304,6 +304,78 @@ def generate_drone_coordinates_static(point, num_samples):
 
     return coordinates
 
+def generate_angular_pattern(start_point, max_length, max_turns, angle_alpha, num_samples, max_speed):
+    """
+    Gera coordenadas para um padrão de mobilidade angular.
+
+    Parâmetros:
+    - start_point (tuple): Coordenadas iniciais (latitude, longitude).
+    - max_length (float): Comprimento máximo de cada trilha em metros.
+    - angle_alpha (float): Ângulo de virada em graus.
+    - max_turns (int): Número máximo de zigue-zagues (ou mudanças de direção).
+    - num_samples (int): Número de amostras a serem geradas.
+    - max_speed (float): Velocidade máxima do drone em metros por segundo.
+
+    Retorna:
+    - Lista de tuplas: Lista de coordenadas (latitude, longitude, velocidade) para o padrão angular.
+    """
+    if num_samples <= 0:
+        raise ValueError("num_samples deve ser maior que 0")
+
+    coordinates = []
+    lat, lon = start_point
+    current_direction = 1  # 1 para frente, -1 para trás
+    distance_per_sample = max_speed  # Distância coberta por amostra
+    distance_covered = 0  # Distância percorrida na direção atual
+    turn_count = 0
+    turn_angle = math.radians(angle_alpha)  # Ângulo de virada em radianos
+
+    for i in range(num_samples):
+        if i > 0:
+            prev_lat, prev_lon, _ = coordinates[-1]
+            speed = haversine_distance(prev_lat, prev_lon, lat, lon)
+        else:
+            speed = 0  # Inicialmente a velocidade é zero
+
+        coordinates.append((lat, lon, speed))
+
+        # Se já fez o número máximo de voltas, retorna pelo caminho
+        if turn_count >= max_turns:
+            current_direction *= -1  # Inverte a direção
+            turn_count = 0
+
+        # Continua na direção atual até atingir o comprimento máximo
+        distance_covered += distance_per_sample
+        if distance_covered >= max_length:
+            # Mudar de direção e aplicar o ângulo
+            distance_covered = 0
+            turn_count += 1
+
+            # Calcula o deslocamento vertical automaticamente pelo ângulo
+            vertical_displacement = max_length * math.sin(turn_angle)
+            horizontal_displacement = max_length * math.cos(turn_angle)
+
+            # Atualiza latitude e longitude
+            lat += (vertical_displacement / earth_radius) * (180 / math.pi) * current_direction
+            lon += (horizontal_displacement / (earth_radius * math.cos(math.radians(lat)))) * (180 / math.pi)
+            coordinates.append((lat, lon, max_speed))
+        else:
+            # Continua em linha reta na direção atual
+            lat += (distance_per_sample * current_direction) / earth_radius * (180 / math.pi)
+
+    return coordinates
+
+def create_drone_angular_pattern(timesteps, drone_id, start_point, max_length, max_turns, angle_alpha, max_speed):
+    drone_coordinates = generate_angular_pattern(start_point, max_length, max_turns, angle_alpha, timesteps, max_speed)
+    drone = Vehicle(drone_id, "VANT")
+
+    for time in range(timesteps):
+        x_current, y_current, speed = drone_coordinates[time]
+        
+        if (x_current, y_current) != (0, 0):
+            drone.add_timestep(time, x_current, y_current, "0", round(speed, 2), "0", "0", "0")
+
+    return drone
 
 def create_drone_static_point(timesteps, drone_id,point):
     drone_coordinates = generate_drone_coordinates_static(point, timesteps)

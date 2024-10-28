@@ -3,7 +3,7 @@ from xml.dom import minidom
 
 from Vehicle import *
 from videomaker import generate_video_with_vector_coordinates_image
-from creating_drones import create_drone_following_object,create_drone_circular_point,create_drone_tractor_pattern,create_drone_square_pattern,create_drone_static_point
+from creating_drones import create_drone_following_object,create_drone_circular_point,create_drone_tractor_pattern,create_drone_square_pattern,create_drone_static_point,create_drone_angular_pattern
 
 class Simulation:
     def __init__(self, trace_path):
@@ -109,6 +109,14 @@ class Simulation:
         # Write the modified XML tree to a new file
         tree.write(new_xml_path, encoding='utf-8', xml_declaration=True)
     
+    def create_drone_angular(self, start_point, sweep_width, max_length, max_turns, angle_alpha=30,max_speed=10):
+
+        self.droneNumber+=1
+        
+        drone = create_drone_angular_pattern(self.timestep_total, f"drone{self.droneNumber}", start_point, max_length, angle_alpha, max_turns, max_speed)
+
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
+
     def create_drone_static(self,point):
         self.droneNumber+=1
         
