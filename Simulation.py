@@ -109,11 +109,11 @@ class Simulation:
         # Write the modified XML tree to a new file
         tree.write(new_xml_path, encoding='utf-8', xml_declaration=True)
     
-    def create_drone_angular(self, start_point, sweep_width, max_length, max_turns, angle_alpha=30,max_speed=10):
+    def create_drone_angular(self, start_point, max_length, max_turns=3, angle_alpha=30,max_speed=10):
 
         self.droneNumber+=1
         
-        drone = create_drone_angular_pattern(self.timestep_total, f"drone{self.droneNumber}", start_point, max_length, angle_alpha, max_turns, max_speed)
+        drone = create_drone_angular_pattern(self.timestep_total, f"drone{self.droneNumber}", start_point, max_length, max_turns, angle_alpha, max_speed)
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
 

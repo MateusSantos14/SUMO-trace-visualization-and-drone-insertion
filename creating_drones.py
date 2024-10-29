@@ -135,72 +135,54 @@ def generate_drone_coordinates_circular(center, radius_meters, num_samples, max_
 
     return coordinates
 
-def generate_tractor_pattern(start_point, width_between_tracks, max_length, max_turns, orientation, num_samples, max_speed):
+def generate_angular_pattern(start_point, max_length, max_turns, angle_alpha, num_samples, max_speed):
     """
-    Gera coordenadas para um padrão de mobilidade de trator.
-
-    Parâmetros:
-    - start_point (tuple): Coordenadas iniciais (latitude, longitude).
-    - width_between_tracks (float): Distância entre cada trilha em metros.
-    - max_length (float): Comprimento máximo de cada trilha em metros.
-    - max_turns (int): Número máximo de mudanças de direção antes de inverter a direção.
-    - orientation (str): 'horizontal' para movimento paralelo ao equador, 'vertical' para movimento meridional.
-    - num_samples (int): Número de amostras a serem geradas.
-    - max_speed (float): Velocidade máxima do drone em metros por segundo.
-
-    Retorna:
-    - Lista de tuplas: Lista de coordenadas (latitude, longitude, velocidade) para o padrão de trator.
+    Gera coordenadas para um padrão de mobilidade angular.
     """
     if num_samples <= 0:
         raise ValueError("num_samples deve ser maior que 0")
-    if max_turns <= 0:
-        raise ValueError("max_turns deve ser maior que 0")
-    if orientation not in ['horizontal', 'vertical']:
-        raise ValueError("orientation deve ser 'horizontal' ou 'vertical'")
 
     coordinates = []
     lat, lon = start_point
-    current_direction_main = 1  # 1 para frente, -1 para trás
-    current_direction_aux = 1
+    current_direction = 1  # 1 para frente, -1 para trás
     distance_per_sample = max_speed  # Distância coberta por amostra
-    turns = 0
-    distance_covered = 0  # Distância percorrida na direção atual
+    total_distance_covered = 0  # Distância total percorrida
+    turn_count = 0
+    turn_angle = math.radians(angle_alpha)  # Ângulo de virada em radianos
 
     for i in range(num_samples):
         if i > 0:
             prev_lat, prev_lon, _ = coordinates[-1]
-            speed = haversine_distance(prev_lat, prev_lon, lat, lon)  # Distância percorrida em 1 segundo, que é a velocidade
+            speed = haversine_distance(prev_lat, prev_lon, lat, lon)
         else:
             speed = 0  # Inicialmente a velocidade é zero
 
         coordinates.append((lat, lon, speed))
 
-        distance_covered += distance_per_sample
-        if distance_covered >= max_length:
-            # Mudar de direção e mover para a próxima trilha
-            current_direction_main *= -1
-            turns += 1
-            distance_covered = 0
-            if turns >= max_turns:
-                # Inverter a direção do movimento principal
-                current_direction_aux *= -1
-                turns = 0
-            # Mover para a próxima linha de latitude (norte ou sul) ou longitude (leste ou oeste)
-            distance_to_move = width_between_tracks
-            while distance_to_move > 0:
-                move_step = min(distance_to_move, distance_per_sample)
-                if orientation == 'horizontal':
-                    lat += (move_step / earth_radius) * current_direction_aux * (180 / math.pi)
-                else:
-                    lon += (move_step / earth_radius) * current_direction_aux * (180 / math.pi) / math.cos(math.radians(lat))
-                distance_to_move -= move_step
-                coordinates.append((lat, lon, max_speed))
+        # Atualiza a distância total percorrida
+        total_distance_covered += distance_per_sample
+
+        # Se atinge o comprimento máximo, muda a direção
+        if total_distance_covered >= max_length:
+            # Mudar de direção e aplicar o ângulo
+            total_distance_covered = 0  # Reinicia a distância total
+            turn_count += 1  # Conta a virada
+
+            # Calcula o deslocamento vertical e horizontal pelo ângulo
+            vertical_displacement = max_length * math.sin(turn_angle) * current_direction
+            horizontal_displacement = max_length * math.cos(turn_angle) * current_direction
+
+            # Atualiza latitude e longitude
+            lat += (vertical_displacement / earth_radius) * (180 / math.pi)
+            lon += (horizontal_displacement / (earth_radius * math.cos(math.radians(lat)))) * (180 / math.pi)
+
+            # Se já fez o número máximo de voltas, inverte a direção
+            if turn_count >= max_turns:
+                current_direction *= -1  # Inverte a direção
+                turn_count = 0
         else:
-            # Continuar na mesma direção
-            if orientation == 'horizontal':
-                lon += (distance_per_sample * current_direction_main) / (earth_radius * math.cos(math.radians(lat))) * (180 / math.pi)
-            else:
-                lat += (distance_per_sample * current_direction_main) / earth_radius * (180 / math.pi)
+            # Continua em linha reta na direção atual
+            lat += (distance_per_sample * current_direction) / earth_radius * (180 / math.pi)
 
     return coordinates
 
@@ -303,21 +285,9 @@ def generate_drone_coordinates_static(point, num_samples):
         coordinates.append((lat_center, lon_center, 0))
 
     return coordinates
-
 def generate_angular_pattern(start_point, max_length, max_turns, angle_alpha, num_samples, max_speed):
     """
     Gera coordenadas para um padrão de mobilidade angular.
-
-    Parâmetros:
-    - start_point (tuple): Coordenadas iniciais (latitude, longitude).
-    - max_length (float): Comprimento máximo de cada trilha em metros.
-    - angle_alpha (float): Ângulo de virada em graus.
-    - max_turns (int): Número máximo de zigue-zagues (ou mudanças de direção).
-    - num_samples (int): Número de amostras a serem geradas.
-    - max_speed (float): Velocidade máxima do drone em metros por segundo.
-
-    Retorna:
-    - Lista de tuplas: Lista de coordenadas (latitude, longitude, velocidade) para o padrão angular.
     """
     if num_samples <= 0:
         raise ValueError("num_samples deve ser maior que 0")
@@ -339,26 +309,25 @@ def generate_angular_pattern(start_point, max_length, max_turns, angle_alpha, nu
 
         coordinates.append((lat, lon, speed))
 
-        # Se já fez o número máximo de voltas, retorna pelo caminho
-        if turn_count >= max_turns:
-            current_direction *= -1  # Inverte a direção
-            turn_count = 0
-
         # Continua na direção atual até atingir o comprimento máximo
         distance_covered += distance_per_sample
         if distance_covered >= max_length:
             # Mudar de direção e aplicar o ângulo
             distance_covered = 0
             turn_count += 1
-
-            # Calcula o deslocamento vertical automaticamente pelo ângulo
+            
+            # Calcula o deslocamento vertical e horizontal pelo ângulo
             vertical_displacement = max_length * math.sin(turn_angle)
             horizontal_displacement = max_length * math.cos(turn_angle)
 
             # Atualiza latitude e longitude
             lat += (vertical_displacement / earth_radius) * (180 / math.pi) * current_direction
             lon += (horizontal_displacement / (earth_radius * math.cos(math.radians(lat)))) * (180 / math.pi)
-            coordinates.append((lat, lon, max_speed))
+
+            # Se já fez o número máximo de voltas, retorna pelo caminho
+            if turn_count >= max_turns:
+                current_direction *= -1  # Inverte a direção
+                turn_count = 0
         else:
             # Continua em linha reta na direção atual
             lat += (distance_per_sample * current_direction) / earth_radius * (180 / math.pi)
