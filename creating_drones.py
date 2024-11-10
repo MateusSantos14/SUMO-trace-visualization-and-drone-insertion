@@ -124,7 +124,7 @@ def generate_drone_coordinates_circular(center, radius_meters, num_samples, max_
     for i in range(num_samples):
         angle_radians = angular_speed * i
         lat = lat_center + (radius_meters / earth_radius) * (180 / math.pi) * math.cos(angle_radians)
-        lon = lon_center + (radius_meters / earth_radius) * (180 / math.pi) / math.cos(math.radians(lat_center)) * math.sin(angle_radians)
+        lon = lon_center + (radius_meters / earth_radius) * (180 / math.pi) * math.sin(angle_radians) / math.cos(math.radians(lat))
 
         if i > 0:
             speed = haversine_distance(coordinates[-1][0], coordinates[-1][1], lat, lon)
@@ -133,6 +133,55 @@ def generate_drone_coordinates_circular(center, radius_meters, num_samples, max_
 
         coordinates.append((lat, lon, speed))
 
+    return coordinates
+
+def generate_drone_coordinates_circular(center, radius_meters, num_samples, max_speed=10):
+    """
+    Generate discrete drone coordinates spinning clockwise around a specific point on Earth, starting from 90 degrees.
+
+    Parameters:
+    - center: Tuple (latitude, longitude) representing the center coordinates in degrees.
+    - radius_meters: Radius of the circular path in meters.
+    - num_samples: Number of discrete samples to generate.
+    - max_speed: Maximum speed of the drone in meters per second.
+
+    Returns:
+    List of tuples representing drone coordinates at different time intervals.
+    Each tuple is in the format (latitude, longitude, speed) in degrees.
+    """
+    lat_center, lon_center = center
+    coordinates = []
+
+    # Ângulo inicial em 90 graus (π/2 radianos) para começar ao norte e no sentido horário
+    angle_radians = math.pi / 2  # Começar no ângulo de 90 graus (ponto norte)
+    
+    # Converter o raio do círculo de metros para graus
+    radius_deg_lat = (radius_meters / earth_radius) * (180 / math.pi)
+    radius_deg_lon = (radius_meters / earth_radius) * (180 / math.pi)
+    
+    # Calcular o ângulo por passo em radianos
+    angle_step_radians = max_speed / radius_meters  # Ângulo em radianos por passo
+    angle_step_degrees = angle_step_radians * (180 / math.pi)  # Convertendo para graus
+    
+    print(f"Ângulo percorrido por passo: {angle_step_degrees:.2f} graus")
+
+    for i in range(num_samples):
+        # Calcular a latitude com o raio em graus
+        lat = lat_center + radius_deg_lat * math.sin(angle_radians)
+
+        # Calcular a longitude com o raio em graus
+        lon = lon_center + radius_deg_lon * math.cos(angle_radians)
+
+        if i > 0:
+            speed = haversine_distance(coordinates[-1][0], coordinates[-1][1], lat, lon)
+        else:
+            speed = 0  # Inicialmente a velocidade é zero
+
+        coordinates.append((lat, lon, speed))
+
+        # Atualizar o ângulo para o próximo passo (sentido horário)
+        angle_radians -= angle_step_radians  # Subtrair o passo em radianos para movimento no sentido horário
+        
     return coordinates
 
 def generate_angular_pattern(start_point, max_length, max_turns, angle_alpha, num_samples, max_speed):
@@ -183,6 +232,78 @@ def generate_angular_pattern(start_point, max_length, max_turns, angle_alpha, nu
         else:
             # Continua em linha reta na direção atual
             lat += (distance_per_sample * current_direction) / earth_radius * (180 / math.pi)
+
+    return coordinates
+
+def generate_tractor_pattern(start_point, width_between_tracks, max_length, max_turns, orientation, num_samples, max_speed):
+    """
+    Gera coordenadas para um padrão de mobilidade de trator.
+
+    Parâmetros:
+    - start_point (tuple): Coordenadas iniciais (latitude, longitude).
+    - width_between_tracks (float): Distância entre cada trilha em metros.
+    - max_length (float): Comprimento máximo de cada trilha em metros.
+    - max_turns (int): Número máximo de mudanças de direção antes de inverter a direção.
+    - orientation (str): 'horizontal' para movimento paralelo ao equador, 'vertical' para movimento meridional.
+    - num_samples (int): Número de amostras a serem geradas.
+    - max_speed (float): Velocidade máxima do drone em metros por segundo.
+
+    Retorna:
+    - Lista de tuplas: Lista de coordenadas (latitude, longitude, velocidade) para o padrão de trator.
+    """
+    if num_samples <= 0:
+        raise ValueError("num_samples deve ser maior que 0")
+    if max_turns <= 0:
+        raise ValueError("max_turns deve ser maior que 0")
+    if orientation not in ['horizontal', 'vertical']:
+        raise ValueError("orientation deve ser 'horizontal' ou 'vertical'")
+
+    coordinates = []
+    lat, lon = start_point
+    current_direction_main = 1  # 1 para frente, -1 para trás
+    current_direction_aux = -1
+    distance_per_sample = max_speed  # Distância coberta por amostra
+    turns = 0
+    distance_covered = 0  # Distância percorrida na direção atual
+    distance_degrees = (distance_per_sample * current_direction_main) / earth_radius * (180 / math.pi)
+
+    for i in range(num_samples):
+        if i > 0:
+            prev_lat, prev_lon, _ = coordinates[-1]
+            speed = haversine_distance(prev_lat, prev_lon, lat, lon)  # Distância percorrida em 1 segundo, que é a velocidade
+        else:
+            speed = 0  # Inicialmente a velocidade é zero
+
+        coordinates.append((lat, lon, speed))
+
+        distance_covered += distance_per_sample
+        if distance_covered >= max_length:
+            # Mudar de direção e mover para a próxima trilha
+            current_direction_main *= -1
+            turns += 1
+            distance_covered = 0
+            if turns >= max_turns:
+                # Inverter a direção do movimento principal
+                current_direction_aux *= -1
+                turns = 0
+            # Mover para a próxima linha de latitude (norte ou sul) ou longitude (leste ou oeste)
+            distance_to_move = width_between_tracks
+            while distance_to_move > 0:
+                move_step = min(distance_to_move, distance_per_sample)
+                if orientation == 'horizontal':
+                    lat += distance_degrees*current_direction_aux
+                else:
+                    lon += distance_degrees*current_direction_aux
+                distance_to_move -= move_step
+                coordinates.append((lat, lon, max_speed))
+
+        else:
+            # Continuar na mesma direção
+            if orientation == 'horizontal':
+                lon+=distance_degrees*current_direction_main
+            else:
+                lat+=distance_degrees*current_direction_main
+
 
     return coordinates
 
@@ -285,6 +406,7 @@ def generate_drone_coordinates_static(point, num_samples):
         coordinates.append((lat_center, lon_center, 0))
 
     return coordinates
+
 def generate_angular_pattern(start_point, max_length, max_turns, angle_alpha, num_samples, max_speed):
     """
     Gera coordenadas para um padrão de mobilidade angular.
