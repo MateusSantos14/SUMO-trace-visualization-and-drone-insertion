@@ -11,8 +11,8 @@ simulacao.create_drone_circular((-73.986478,40.744406),40)
 
 limits = ((-73.986912,40.745779),(-73.987874,40.744475),(-73.985928,40.743628),(-73.985150,40.744933))
 
-simulacao.export_to_video("circular",limits_map=limits,only_vants=1)
-
+#simulacao.export_to_video("circular",limits_map=limits,only_vants=1)
+simulacao.export_to_video("circular2",only_vants=1)
 
 
 #test trace exporter

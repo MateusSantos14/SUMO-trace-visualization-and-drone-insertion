@@ -278,6 +278,7 @@ def generate_tractor_pattern(start_point, width_between_tracks, max_length, max_
 
         distance_covered += distance_per_sample
         if distance_covered >= max_length:
+            distance_covered = max_length
             # Mudar de direção e mover para a próxima trilha
             current_direction_main *= -1
             turns += 1

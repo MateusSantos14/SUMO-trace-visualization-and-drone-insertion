@@ -29,6 +29,6 @@ def read_and_offset_trace(file_path, output_path):
 
 
 # Exemplo de uso
-file_path = 'manhattandenso.xml'
-output_path = 'manhattandenso2.xml'
+file_path = 'manhattan.xml'
+output_path = 'manhattan2.xml'
 read_and_offset_trace(file_path, output_path)

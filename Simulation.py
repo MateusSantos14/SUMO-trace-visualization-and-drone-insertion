@@ -69,6 +69,7 @@ class Simulation:
                     coordinates.append((timestep.x(),timestep.y()))
             index_in_vector_coordinates = names.index(vehicle_object.type())
             vector_coordinates[index_in_vector_coordinates].append(coordinates)
+        names = list(self.typeList.values())#MUDEI PARA TESTE
         
         generate_video_with_vector_coordinates_image(vector_coordinates,video_directory,names,limits_map,only_vants)
 
@@ -167,6 +168,20 @@ class Simulation:
             self.vehicleList[vehicle.id()]
             if vehicle.type() not in self.typeList:
                 self.typeList[vehicle.type()] = vehicle.type()
+
+    def removeVehicle(self,vehicleId):
+        if vehicleId not in self.vehicleList.keys():
+            raise ValueError("ID doesn't exists.")
+        else:
+            del self.vehicleList[vehicleId]
+
+    def changeLegend(self, oldLegend, newLegend):
+        print 
+        if oldLegend not in self.typeList.keys():
+            raise ValueError("Type does not exists")
+        else:
+            self.typeList[oldLegend] = newLegend
+ 
 
     #Debug tools
     def print_all_vehicle_info(self,vehicle_id):
