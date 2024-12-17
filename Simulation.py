@@ -3,7 +3,7 @@ from xml.dom import minidom
 
 from Vehicle import *
 from videomaker import generate_video_with_vector_coordinates_image
-from creating_drones import create_drone_following_object,create_drone_circular_point,create_drone_tractor_pattern,create_drone_square_pattern,create_drone_static_point,create_drone_angular_pattern
+from creating_drones import create_drone_following_object,create_drone_circular_point,create_drone_tractor_pattern,create_drone_square_pattern,create_drone_static_point,create_drone_angular_pattern,create_drone_generic_pattern
 
 class Simulation:
     def __init__(self, trace_path):
@@ -160,6 +160,14 @@ class Simulation:
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
 
+    def create_drone_generic(self, start_point, distance_lists,angles_list, max_speed = 10):
+
+        self.droneNumber+=1
+        
+        drone = create_drone_generic_pattern(self.timestep_total, f"drone{self.droneNumber}", start_point, distance_lists,angles_list,max_speed)
+
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
+
     #Add your own vehicle
     def addVehicle(self,vehicle):
         if vehicle.id() in self.vehicleList.keys():
@@ -192,6 +200,15 @@ class Simulation:
             timestep = vehicle.get_timestep_dict(i)
             if timestep != None:
                 print(timestep)
+    def get_vehicle_dict(self,vehicle_id):
+        if vehicle_id not in self.vehicleList.keys():
+            raise ValueError("ID not found in simulation.")
+        vehicle = self.vehicleList[vehicle_id]
+        timesteps = []
+        for i in range(self.timestep_total+1):
+            timestep = vehicle.get_timestep_dict(i)
+            timesteps.append(timestep)
+        return timesteps
 
     def vector_with_all_coordinates(self):
         names = list(self.typeList.keys())

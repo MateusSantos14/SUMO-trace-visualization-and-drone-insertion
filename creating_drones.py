@@ -539,3 +539,86 @@ def create_drone_square_pattern(timesteps, drone_id, center_point, side_length, 
             drone.add_timestep(time, x_current, y_current, "0", round(speed, 2), "0", "0", "0")
 
     return drone
+
+def generate_generic_pattern(start_point, distance_lists,angles_list, num_samples, max_speed):
+    """
+    Gera coordenadas para um padrão de mobilidade genérico.
+    Inicia no start_point e se move por padrão para a direita(Angle define angulação inicial, default = 0)
+
+    Parâmetros:
+    - start_point (tuple): Coordenadas iniciais (latitude, longitude).
+    - width_between_tracks (float): Distância entre cada trilha em metros.
+    - max_length (float): Comprimento máximo de cada trilha em metros.
+    - max_turns (int): Número máximo de mudanças de direção antes de inverter a direção.
+    - orientation (str): 'horizontal' para movimento paralelo ao equador, 'vertical' para movimento meridional.
+    - angle(int): Varia de 0 a 90 graus(Padrão é 0)
+    - direction(int): horario(0), anti-horario(1), Determina tendencia do movimento
+    - num_samples (int): Número de amostras a serem geradas.
+    - max_speed (float): Velocidade máxima do drone em metros por segundo.
+
+    Retorna:
+    - Lista de tuplas: Lista de coordenadas (latitude, longitude, velocidade) para o padrão de trator.
+    """
+
+    coordinates = []
+    lat, lon = start_point
+    distance_per_sample = max_speed  # Distância coberta por amostra
+    
+    distance_degrees = distance_per_sample / earth_radius * (180 / math.pi)
+    
+    coordinates.append((lat, lon, 0))
+    turn = 0
+    states_number = len(distance_lists)
+    distance_to_cover = meters_to_geo(distance_lists[turn])
+    angle_of_movement = angles_list[turn]
+    distance_covered = 0
+    i = 0
+    while(i<num_samples):    
+        while(distance_covered+distance_degrees<=distance_to_cover):
+            rad = math.radians(angle_of_movement)
+            lat += distance_degrees * math.cos(rad)
+            lon += distance_degrees * math.sin(rad)
+            coordinates.append((lat, lon, max_speed))
+            distance_covered+=distance_degrees
+            i+=1
+        lack_distance = distance_to_cover-distance_covered
+        if(lack_distance>0):
+            lat += lack_distance * math.cos(rad)
+            lon += lack_distance * math.sin(rad)
+            turn+=1
+            turn%=states_number
+            acumulated = distance_degrees - lack_distance
+            distance_to_cover = meters_to_geo(distance_lists[turn])
+            angle_of_movement = angles_list[turn]
+            distance_covered = 0
+            lat += acumulated * math.cos(rad)
+            lon += acumulated * math.sin(rad)
+            coordinates.append((lat, lon, max_speed))
+            i+=1
+        else:
+            turn%=states_number
+            distance_to_cover = meters_to_geo(distance_lists[turn])
+            angle_of_movement = angles_list[turn]
+            distance_covered = 0  
+        print(i)
+        
+
+    return coordinates
+
+
+def create_drone_generic_pattern(timesteps, drone_id, start_point, distance_lists,angles_list, max_speed):
+    
+    drone_coordinates = generate_generic_pattern(start_point, distance_lists,angles_list, timesteps, max_speed)
+    drone = Vehicle(drone_id, "VANT")
+
+    for time in range(timesteps):
+        x_current, y_current, speed = drone_coordinates[time]
+        
+        if (x_current, y_current) != (0, 0):
+            drone.add_timestep(time, x_current, y_current, "0", round(speed, 2), "0", "0", "0")
+
+    return drone
+
+
+def meters_to_geo(a):
+    return a / earth_radius * (180 / math.pi)

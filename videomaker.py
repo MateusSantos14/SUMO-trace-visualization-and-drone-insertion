@@ -5,6 +5,8 @@ import contextily as cx#Only for image background
 from shapely.geometry import Polygon
 import geopandas as gpd
 
+from matplotlib.animation import FuncAnimation, FFMpegWriter
+
 def _create_dataframe_default(vector_coordinates):
     min_x = 1000
     max_x = -1000
@@ -202,5 +204,8 @@ def generate_video_with_vector_coordinates_image(vector_coordinates,directory_vi
 
     ani = FuncAnimation(fig, update, frames=range(0, total_number_of_frames, 1), init_func=init, interval=100)#Configuração do vídeo
     ani.save(directory_video, writer='ffmpeg')
+
+    #ffmpeg_writer = FFMpegWriter(fps=10, codec='libx264', bitrate=5000)
+    #ani.save(directory_video, writer=ffmpeg_writer)
 
 
