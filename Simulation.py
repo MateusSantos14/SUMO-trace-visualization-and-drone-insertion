@@ -1,32 +1,37 @@
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
+import math
 from Vehicle import *
 from videomaker import generate_video_with_vector_coordinates_image
-from creating_drones import create_drone_following_object,create_drone_circular_point,create_drone_tractor_pattern,create_drone_square_pattern,create_drone_static_point,create_drone_angular_pattern,create_drone_generic_pattern
+from creating_drones import (
+    create_drone_following_object,
+    create_drone_tractor_pattern,
+    create_drone_static_point,
+    create_drone_angular_pattern,
+    create_drone_generic_pattern,
+    meters_to_geo,
+)
+
 
 class Simulation:
     def __init__(self, trace_path):
-        # Vars
-        self.vehicleList = {} #List with all vehicles
+        self.vehicleList = {}  # List with all vehicles
         self.typeList = {}
-        self.typeList["VANT"] = "VANT"
+        self.typeList["VANT"] = "UAV"
         self.timestep_total = 0
         self.trace_path = trace_path
         self.droneNumber = 0
         self.read_xml(trace_path)
-        
-    def read_xml(self,trace_path):
-        # Load and parse the XML file
+
+    def read_xml(self, trace_path):
         outputxml = ET.parse(trace_path)
         timestepList = outputxml.getroot()
-
-        # Print the root element tag
         for timestep in timestepList:
-            timeInstant = timestep.attrib['time']
+            timeInstant = timestep.attrib["time"]
             self.timestep_total = int(float(timeInstant))
             for timestepVehicleData in timestep:
-                if(timestepVehicleData.tag == "vehicle"):
+                if timestepVehicleData.tag == "vehicle":
                     vehicleData = timestepVehicleData.attrib
                     vehicleId = vehicleData["id"]
                     vehicleX = vehicleData["x"]
@@ -37,139 +42,249 @@ class Simulation:
                     vehiclePos = vehicleData["pos"]
                     vehicleLane = vehicleData["lane"]
                     vehicleSlope = vehicleData["slope"]
-
-                    #Add to vehicleList dictionary
                     if vehicleId not in self.vehicleList.keys():
-                        self.vehicleList[vehicleId] = Vehicle(vehicleId,vehicleType)
+                        self.vehicleList[vehicleId] = Vehicle(vehicleId, vehicleType)
                         if vehicleType not in self.typeList:
                             self.typeList[vehicleType] = vehicleType
+                    self.vehicleList[vehicleId].add_timestep(
+                        timeInstant,
+                        vehicleX,
+                        vehicleY,
+                        vehicleAngle,
+                        vehicleSpeed,
+                        vehiclePos,
+                        vehicleLane,
+                        vehicleSlope,
+                    )
 
-                    #Add timesteps
-                    self.vehicleList[vehicleId].add_timestep(timeInstant, vehicleX, vehicleY, vehicleAngle, vehicleSpeed, vehiclePos, vehicleLane, vehicleSlope)
-    
-
-    def getVehicleById(self,id):
+    def getVehicleById(self, id):
         if id in self.vehicleList.keys():
             return self.vehicleList[id]
         else:
             raise ValueError("ID not found in simulation.")
-        
-    def export_to_video(self,video_directory,limits_map = 0,only_vants=0):
-        video_directory+=".mp4"
+
+    def export_to_video(self, video_directory, limits_map=0, only_vants=0):
+        video_directory += ".mp4"
         names = list(self.typeList.keys())
         vector_coordinates = [[] for i in names]
         for vehicle_id in self.vehicleList.keys():
             coordinates = []
             vehicle_object = self.vehicleList[vehicle_id]
-            for i in range(int(float(self.timestep_total)+1)):
+            for i in range(int(float(self.timestep_total) + 1)):
                 timestep = vehicle_object.get_timestep(i)
                 if timestep == None:
-                    coordinates.append((0,0))
+                    coordinates.append((0, 0))
                 else:
-                    coordinates.append((timestep.x(),timestep.y()))
+                    coordinates.append((timestep.x(), timestep.y()))
             index_in_vector_coordinates = names.index(vehicle_object.type())
             vector_coordinates[index_in_vector_coordinates].append(coordinates)
-        names = list(self.typeList.values())#MUDEI PARA TESTE
-        
-        generate_video_with_vector_coordinates_image(vector_coordinates,video_directory,names,limits_map,only_vants)
+        names = list(self.typeList.values())  # MUDEI PARA TESTE
 
+        generate_video_with_vector_coordinates_image(
+            vector_coordinates, video_directory, names, limits_map, only_vants
+        )
 
     def get_timestep_total(self):
         return self.timestep_total
 
     def export_timesteps_to_xml(self, new_xml_path):
-        # Load and parse the original XML file
         tree = ET.parse(self.trace_path)
         root = tree.getroot()
 
-        # Iterate over each timestep in the original XML
-        for timestep in root.findall('timestep'):
-            time = timestep.attrib['time']
-
-            # Remove all vehicle elements from the current timestep
-            for vehicle in timestep.findall('vehicle'):
+        for timestep in root.findall("timestep"):
+            time = timestep.attrib["time"]
+            for vehicle in timestep.findall("vehicle"):
                 timestep.remove(vehicle)
-            
-            # Now, add back vehicles from the simulation's current state
+
             if int(float(time)) <= self.timestep_total:
                 for vehicle_id, vehicle_obj in self.vehicleList.items():
                     if vehicle_obj.is_present(int(float(time))):
                         timestep_vehicle = vehicle_obj.get_timestep(int(float(time)))
-                        ET.SubElement(timestep, 'vehicle', {
-                            'id': vehicle_obj.id(),
-                            'x': str(timestep_vehicle.x()),
-                            'y': str(timestep_vehicle.y()),
-                            'angle': str(timestep_vehicle.angle()),
-                            'type': vehicle_obj.type(),
-                            'speed': str(timestep_vehicle.speed()),
-                            'pos': str(timestep_vehicle.pos()),
-                            'lane': timestep_vehicle.lane(),
-                            'slope': str(timestep_vehicle.slope())
-                        })
+                        ET.SubElement(
+                            timestep,
+                            "vehicle",
+                            {
+                                "id": vehicle_obj.id(),
+                                "x": str(timestep_vehicle.x()),
+                                "y": str(timestep_vehicle.y()),
+                                "angle": str(timestep_vehicle.angle()),
+                                "type": vehicle_obj.type(),
+                                "speed": str(timestep_vehicle.speed()),
+                                "pos": str(timestep_vehicle.pos()),
+                                "lane": timestep_vehicle.lane(),
+                                "slope": str(timestep_vehicle.slope()),
+                            },
+                        )
 
-        # Write the modified XML tree to a new file
-        tree.write(new_xml_path, encoding='utf-8', xml_declaration=True)
-    
-    def create_drone_angular(self, start_point, max_length, max_turns=3, angle_alpha=30,max_speed=10):
+        tree.write(new_xml_path, encoding="utf-8", xml_declaration=True)
 
-        self.droneNumber+=1
-        
-        drone = create_drone_angular_pattern(self.timestep_total, f"drone{self.droneNumber}", start_point, max_length, max_turns, angle_alpha, max_speed)
+    def create_drone_angular(
+        self, start_point, max_length, max_turns=3, angle_alpha=30, max_speed=10
+    ):
+        self.droneNumber += 1
+
+        drone = create_drone_angular_pattern(
+            self.timestep_total,
+            f"drone{self.droneNumber}",
+            start_point,
+            max_length,
+            max_turns,
+            angle_alpha,
+            max_speed,
+        )
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
 
-    def create_drone_static(self,point):
-        self.droneNumber+=1
-        
-        drone = create_drone_static_point(self.timestep_total,f"drone{self.droneNumber}",point)
+    def create_drone_static(self, point):
+        self.droneNumber += 1
+
+        drone = create_drone_static_point(
+            self.timestep_total, f"drone{self.droneNumber}", point
+        )
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
 
-    def create_drone_following(self,vehicle_id,offset_distance,max_speed=10):
+    def create_drone_following(self, vehicle_id, offset_distance, max_speed=10):
         if vehicle_id not in self.vehicleList.keys():
             raise ValueError("ID not found in simulation.")
         vehicle = self.vehicleList[vehicle_id]
 
-        self.droneNumber+=1
-        
-        drone = create_drone_following_object(self.timestep_total,f"drone{self.droneNumber}",vehicle,offset_distance,max_speed=max_speed)
+        self.droneNumber += 1
 
-        self.vehicleList[f"drone{self.droneNumber}"] = drone
-    
-    def create_drone_circular(self, center, radius_meters, max_speed = 10):
-
-        self.droneNumber+=1
-        
-        drone = create_drone_circular_point(self.timestep_total, f"drone{self.droneNumber}", center, radius_meters, max_speed)
-
-        self.vehicleList[f"drone{self.droneNumber}"] = drone
-
-    def create_drone_tractor(self, start_point, width_between_tracks, max_length, max_turns, orientation='horizontal', max_speed = 10):
-
-        self.droneNumber+=1
-        
-        drone = create_drone_tractor_pattern(self.timestep_total, f"drone{self.droneNumber}", start_point, width_between_tracks, max_length, max_turns, orientation, max_speed)
-
-        self.vehicleList[f"drone{self.droneNumber}"] = drone
-    
-    def create_drone_square(self, center_point, side_length, angle_degrees, max_speed = 10):
-
-        self.droneNumber+=1
-        
-        drone = create_drone_square_pattern(self.timestep_total, f"drone{self.droneNumber}", center_point, side_length, angle_degrees, max_speed)
+        drone = create_drone_following_object(
+            self.timestep_total,
+            f"drone{self.droneNumber}",
+            vehicle,
+            offset_distance,
+            max_speed=max_speed,
+        )
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
 
-    def create_drone_generic(self, start_point, distance_lists,angles_list, max_speed = 10):
+    def create_drone_tractor(
+        self,
+        start_point,
+        width_between_tracks,
+        max_length,
+        max_turns,
+        orientation="horizontal",
+        max_speed=10,
+    ):
+        self.droneNumber += 1
 
-        self.droneNumber+=1
-        
-        drone = create_drone_generic_pattern(self.timestep_total, f"drone{self.droneNumber}", start_point, distance_lists,angles_list,max_speed)
+        drone = create_drone_tractor_pattern(
+            self.timestep_total,
+            f"drone{self.droneNumber}",
+            start_point,
+            width_between_tracks,
+            max_length,
+            max_turns,
+            orientation,
+            max_speed,
+        )
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
 
-    #Add your own vehicle
-    def addVehicle(self,vehicle):
+    def create_drone_circular(
+        self, center, radius_meters, max_speed=10, num_points=12, start_angle=0
+    ):
+        self.droneNumber += 1
+        distance_list = [2 * math.pi * radius_meters / num_points] * num_points
+        angle_list = []
+        omega = max_speed / radius_meters
+
+        for i in range(num_points):
+            angle = (
+                360 / num_points
+            ) * i  # Distribuir os pontos uniformemente ao redor da circunferência
+            angle_list.append(angle)
+
+        # Calcular ponto inicial com base no ângulo fornecido
+        start_point = (
+            center[0]
+            + meters_to_geo(radius_meters) * math.cos(math.radians(start_angle)),
+            center[1]
+            + meters_to_geo(radius_meters) * math.sin(math.radians(start_angle)),
+        )
+
+        print("Start Point:", start_point)
+        print("Center Point:", center)
+        print("Distance List:", distance_list)
+        print("Angle List:", angle_list)
+
+        drone = create_drone_generic_pattern(
+            self.timestep_total,
+            f"drone{self.droneNumber}",
+            start_point,
+            distance_list,
+            angle_list,
+            max_speed,
+        )
+
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
+
+    def create_drone_square(
+        self, center_point, side_length, angle_degrees=90, max_speed=10
+    ):
+        self.droneNumber += 1
+
+        distance_list = []
+        angle_list = []
+
+        for i in range(4):
+            distance_list.append(side_length)
+            angle = angle_degrees - (90 * i)
+            if angle < 0:
+                angle += 360
+            angle_list.append(angle)
+        center_direction = ((-3) * angle_degrees) + 315
+        if center_direction < 0:
+            angle = 360 + (angle % 360)
+        start_point = (
+            center_point[0]
+            - abs(
+                meters_to_geo(math.sqrt(2) * side_length / 2)
+                * math.cos(math.radians(center_direction))
+            ),
+            center_point[1]
+            - abs(
+                meters_to_geo(math.sqrt(2) * side_length / 2)
+                * math.sin(math.radians(center_direction))
+            ),
+        )
+        print(start_point)
+        print(center_point)
+        print(distance_list)
+        print(angle_list)
+        drone = create_drone_generic_pattern(
+            self.timestep_total,
+            f"drone{self.droneNumber}",
+            start_point,
+            distance_list,
+            angle_list,
+            max_speed,
+        )
+
+        # drone = create_drone_square_pattern(self.timestep_total, f"drone{self.droneNumber}", center_point, side_length, angle_degrees, max_speed)
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
+
+    def create_drone_generic(
+        self, start_point, distance_lists, angles_list, max_speed=10
+    ):
+        self.droneNumber += 1
+
+        drone = create_drone_generic_pattern(
+            self.timestep_total,
+            f"drone{self.droneNumber}",
+            start_point,
+            distance_lists,
+            angles_list,
+            max_speed,
+        )
+
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
+
+    def addVehicle(self, vehicle):
         if vehicle.id() in self.vehicleList.keys():
             raise ValueError("ID already exists.")
         else:
@@ -177,35 +292,34 @@ class Simulation:
             if vehicle.type() not in self.typeList:
                 self.typeList[vehicle.type()] = vehicle.type()
 
-    def removeVehicle(self,vehicleId):
+    def removeVehicle(self, vehicleId):
         if vehicleId not in self.vehicleList.keys():
             raise ValueError("ID doesn't exists.")
         else:
             del self.vehicleList[vehicleId]
 
     def changeLegend(self, oldLegend, newLegend):
-        print 
+        print
         if oldLegend not in self.typeList.keys():
             raise ValueError("Type does not exists")
         else:
             self.typeList[oldLegend] = newLegend
- 
 
-    #Debug tools
-    def print_all_vehicle_info(self,vehicle_id):
+    def print_all_vehicle_info(self, vehicle_id):
         if vehicle_id not in self.vehicleList.keys():
             raise ValueError("ID not found in simulation.")
         vehicle = self.vehicleList[vehicle_id]
-        for i in range(self.timestep_total+1):
+        for i in range(self.timestep_total + 1):
             timestep = vehicle.get_timestep_dict(i)
             if timestep != None:
                 print(timestep)
-    def get_vehicle_dict(self,vehicle_id):
+
+    def get_vehicle_dict(self, vehicle_id):
         if vehicle_id not in self.vehicleList.keys():
             raise ValueError("ID not found in simulation.")
         vehicle = self.vehicleList[vehicle_id]
         timesteps = []
-        for i in range(self.timestep_total+1):
+        for i in range(self.timestep_total + 1):
             timestep = vehicle.get_timestep_dict(i)
             timesteps.append(timestep)
         return timesteps
@@ -216,21 +330,12 @@ class Simulation:
         for vehicle_id in self.vehicleList.keys():
             coordinates = []
             vehicle_object = self.vehicleList[vehicle_id]
-            for i in range(int(float(self.timestep_total)+1)):
+            for i in range(int(float(self.timestep_total) + 1)):
                 timestep = vehicle_object.get_timestep(i)
                 if timestep == None:
-                    coordinates.append((0,0))
+                    coordinates.append((0, 0))
                 else:
-                    coordinates.append((timestep.x(),timestep.y()))
+                    coordinates.append((timestep.x(), timestep.y()))
             index_in_vector_coordinates = names.index(vehicle_object.type())
             vector_coordinates[index_in_vector_coordinates].append(coordinates)
         return vector_coordinates
-
-        
-        
-        
-
-
-
-
-
