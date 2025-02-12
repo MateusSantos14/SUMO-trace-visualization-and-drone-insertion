@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import xml.etree.ElementTree as ET
-import json
 import configparser
 from typing import List, Dict, Any
 import os
@@ -10,6 +9,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import contextily as cx
 from shapely.geometry import Polygon
 import geopandas as gpd
+from ttkthemes import ThemedTk
 
 class DroneConfiguratorGUI:
     def __init__(self, root):
@@ -308,7 +308,7 @@ class DroneConfiguratorGUI:
             messagebox.showinfo("Success", "Configuration file saved successfully!")
 
 def main():
-    root = tk.Tk()
+    root = ThemedTk(theme="arc")  # Use a modern theme
     app = DroneConfiguratorGUI(root)
     root.mainloop()
 
