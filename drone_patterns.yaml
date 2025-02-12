@@ -1,0 +1,43 @@
+angular:
+  angle_alpha:
+    default: 30
+    label: Angle Alpha (degrees)
+    type: float
+  max_length:
+    default: 40
+    label: Max Length (meters)
+    type: float
+  max_speed:
+    default: 10
+    label: Max Speed (m/s)
+    type: float
+  max_turns:
+    default: 3
+    label: Max Turns
+    type: int
+circular:
+  max_speed:
+    default: 10
+    label: Max Speed (m/s)
+    type: float
+  radius_meters:
+    default: 40
+    label: Radius (meters)
+    type: float
+  start_angle:
+    default: 0
+    label: Start Angle (degrees)
+    type: float
+following:
+  max_speed:
+    default: 10
+    label: Max Speed (m/s)
+    type: float
+  offset_distance:
+    default: 10
+    label: Offset Distance (meters)
+    type: float
+  vehicle_id:
+    default: ''
+    label: Vehicle ID
+    type: str
