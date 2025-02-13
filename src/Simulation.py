@@ -12,7 +12,8 @@ from src.creating_drones import (
     create_drone_generic_pattern,
     meters_to_geo,
 )
-
+from src.utils.offSetTool import read_and_offset_trace as offset
+from src.utils.conversionMeters import convert_coordinates
 
 class Simulation:
     def __init__(self, trace_path):
@@ -47,7 +48,7 @@ class Simulation:
                         if vehicleType not in self.typeList:
                             self.typeList[vehicleType] = vehicleType
                     self.vehicleList[vehicleId].add_timestep(
-                        timeInstant,
+                        str(float(timeInstant)+1),
                         vehicleX,
                         vehicleY,
                         vehicleAngle,
@@ -56,6 +57,7 @@ class Simulation:
                         vehicleLane,
                         vehicleSlope,
                     )
+        self.timestep_total+=1
 
     def getVehicleById(self, id):
         if id in self.vehicleList.keys():
@@ -87,7 +89,7 @@ class Simulation:
     def get_timestep_total(self):
         return self.timestep_total
 
-    def export_timesteps_to_xml(self, new_xml_path):
+    def export_timesteps_to_xml(self, new_xml_path,geo = 1):
         tree = ET.parse(self.trace_path)
         root = tree.getroot()
 
@@ -115,8 +117,9 @@ class Simulation:
                                 "slope": str(timestep_vehicle.slope()),
                             },
                         )
-
         tree.write(new_xml_path, encoding="utf-8", xml_declaration=True)
+        if geo == 0:
+            convert_coordinates(new_xml_path,new_xml_path)
 
     def create_drone_angular(
         self, start_point, max_length, max_turns=3, angle_alpha=30, max_speed=10
