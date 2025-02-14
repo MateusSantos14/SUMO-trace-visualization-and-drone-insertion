@@ -163,7 +163,7 @@ class Simulation:
         )
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
-
+    """
     def create_drone_tractor(
         self,
         start_point,
@@ -187,8 +187,61 @@ class Simulation:
         )
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
+    """
+    def create_drone_tractor(
+        self,
+        start_point,
+        width_between_tracks,
+        max_length,
+        max_turns,
+        orientation="horizontal",
+        max_speed=10,
+    ):
+        self.droneNumber += 1
+        
+        distance_list = []
+        angle_list = []
+        
+        # Initialize base angles based on orientation
+        if orientation == "horizontal":
+            start_angle = 0  # Move right
+        else:  # vertical
+            start_angle = 90  # Move up
+        distance_list.append(width_between_tracks)
+        angle_list.append(start_angle)
+        # Create the tractor pattern
+        for turn in range(max_turns):
+            if turn%2==0:
+                angle_list.append(start_angle-90)
+                distance_list.append(max_length)
+            else:
+                angle_list.append(start_angle+90)
+                distance_list.append(max_length)
+            distance_list.append(width_between_tracks)
+            angle_list.append(start_angle)
+        angle_list.append(-start_angle)
+        distance_list.append(width_between_tracks)
+        for turn in range(max_turns):
+            angle_list.append(-start_angle)
+            distance_list.append(width_between_tracks)
+            if turn%2==0:
+                angle_list.append(start_angle+90)
+                distance_list.append(max_length)
+            else:
+                angle_list.append(start_angle-90)
+                distance_list.append(max_length)
+        
+        drone = create_drone_generic_pattern(
+            self.timestep_total,
+            f"drone{self.droneNumber}",
+            start_point,
+            distance_list,
+            angle_list,
+            max_speed,
+        )
+        
+        self.vehicleList[f"drone{self.droneNumber}"] = drone
 
-    
     def create_drone_circular(self, center, radius_meters, max_speed=10, start_angle=0):
         self.droneNumber += 1
         omega = max_speed / radius_meters  # Angular velocity in radians per second
