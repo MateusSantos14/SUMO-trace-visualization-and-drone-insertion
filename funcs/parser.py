@@ -28,11 +28,12 @@ def parse_config_and_run(config_file):
         elif section.startswith("DroneAngular"):
             start_point = literal_eval(config[section]["start_point"])
             max_length = int(config[section]["max_length"])
+            start_angle = config[section].getint("start_angle", fallback=0)  # Default: 3
             max_turns = config[section].getint("max_turns", fallback=3)  # Default: 3
             angle_alpha = config[section].getint("angle_alpha", fallback=30)  # Default: 30
             max_speed = config[section].getint("max_speed", fallback=10)  # Default: 10
 
-            simulation.create_drone_angular(start_point, max_length, max_turns, angle_alpha, max_speed)
+            simulation.create_drone_angular(start_point, max_length,start_angle, max_turns, angle_alpha, max_speed)
             print(f"Angular drone created with start point at {start_point}.")
 
         elif section.startswith("DroneTractor"):

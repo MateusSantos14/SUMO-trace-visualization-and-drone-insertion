@@ -6,9 +6,7 @@ from src.Vehicle import *
 from src.videomaker import generate_video_with_vector_coordinates_image
 from src.creating_drones import (
     create_drone_following_object,
-    create_drone_tractor_pattern,
     create_drone_static_point,
-    create_drone_angular_pattern,
     create_drone_generic_pattern,
     meters_to_geo,
 )
@@ -122,22 +120,36 @@ class Simulation:
             convert_coordinates(new_xml_path,new_xml_path)
 
     def create_drone_angular(
-        self, start_point, max_length, max_turns=3, angle_alpha=30, max_speed=10
+        self, start_point, max_length, start_angle = 0, max_turns=3, angle_alpha=30, max_speed=10
     ):
         self.droneNumber += 1
-
-        drone = create_drone_angular_pattern(
+        
+        distance_list = []
+        angle_list = []
+        for turn in range(max_turns):
+            angle_list.append(start_angle+angle_alpha)
+            distance_list.append(max_length)
+            angle_list.append(180-start_angle-angle_alpha)
+            distance_list.append(max_length)
+            
+        for turn in range(max_turns):
+            angle_list.append(start_angle-angle_alpha)
+            distance_list.append(max_length)
+            angle_list.append(180+start_angle+angle_alpha)
+            distance_list.append(max_length)
+        
+        print(angle_list)
+        drone = create_drone_generic_pattern(
             self.timestep_total,
             f"drone{self.droneNumber}",
             start_point,
-            max_length,
-            max_turns,
-            angle_alpha,
+            distance_list,
+            angle_list,
             max_speed,
         )
-
+        
         self.vehicleList[f"drone{self.droneNumber}"] = drone
-
+    
     def create_drone_static(self, point):
         self.droneNumber += 1
 
@@ -188,23 +200,23 @@ class Simulation:
         # Create the tractor pattern
         for turn in range(max_turns):
             if turn%2==0:
-                angle_list.append(start_angle-90)
+                angle_list.append(90-start_angle)
                 distance_list.append(max_length)
             else:
-                angle_list.append(start_angle+90)
+                angle_list.append(270-start_angle)
                 distance_list.append(max_length)
             distance_list.append(width_between_tracks)
             angle_list.append(start_angle)
-        angle_list.append(-start_angle)#SOMAR 180
+        angle_list.append(180+start_angle)
         distance_list.append(width_between_tracks)
         for turn in range(max_turns):
             if turn%2==0:
-                angle_list.append(start_angle-90)
+                angle_list.append(270-start_angle)
                 distance_list.append(max_length)
             else:
-                angle_list.append(start_angle+90)
+                angle_list.append(90-start_angle)
                 distance_list.append(max_length)
-            angle_list.append(-start_angle)
+            angle_list.append(180+start_angle)
             distance_list.append(width_between_tracks)
         
         drone = create_drone_generic_pattern(

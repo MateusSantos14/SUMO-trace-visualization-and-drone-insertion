@@ -39,3 +39,10 @@ simulation.print_all_vehicle_info("vehicle_or_drone_id")
 simulation.export_timesteps_to_xml("new_file_path.xml")
 # Generate a video from the simulation
 simulation.export_to_video("video_file_name")
+
+#TODO
+
+Definir output do nome do arquivo de setup
+refatorar pastas arquivos remover o que foi refatorado
+documentar
+fazer video explicando

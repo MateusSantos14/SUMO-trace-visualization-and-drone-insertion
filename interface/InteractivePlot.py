@@ -91,6 +91,7 @@ class InteractivePlot:
                 config[section_name] = {
                     "start_point": f"{x:.6f}, {y:.6f}",
                     "max_length": "40",
+                    "start_angle": "0",
                     "max_turns": "3",
                     "angle_alpha": "30",
                     "max_speed": "10"
