@@ -12,7 +12,7 @@ from src.creating_drones import (
     create_drone_generic_pattern,
     meters_to_geo,
 )
-from src.utils.offSetTool import read_and_offset_trace as offset
+
 from src.utils.conversionMeters import convert_coordinates
 
 class Simulation:
@@ -48,7 +48,7 @@ class Simulation:
                         if vehicleType not in self.typeList:
                             self.typeList[vehicleType] = vehicleType
                     self.vehicleList[vehicleId].add_timestep(
-                        str(float(timeInstant)+1),
+                        str(float(timeInstant)+1),#Do the Offset to assure UAVs at firsts ID
                         vehicleX,
                         vehicleY,
                         vehicleAngle,
@@ -163,31 +163,7 @@ class Simulation:
         )
 
         self.vehicleList[f"drone{self.droneNumber}"] = drone
-    """
-    def create_drone_tractor(
-        self,
-        start_point,
-        width_between_tracks,
-        max_length,
-        max_turns,
-        orientation="horizontal",
-        max_speed=10,
-    ):
-        self.droneNumber += 1
 
-        drone = create_drone_tractor_pattern(
-            self.timestep_total,
-            f"drone{self.droneNumber}",
-            start_point,
-            width_between_tracks,
-            max_length,
-            max_turns,
-            orientation,
-            max_speed,
-        )
-
-        self.vehicleList[f"drone{self.droneNumber}"] = drone
-    """
     def create_drone_tractor(
         self,
         start_point,
@@ -219,17 +195,17 @@ class Simulation:
                 distance_list.append(max_length)
             distance_list.append(width_between_tracks)
             angle_list.append(start_angle)
-        angle_list.append(-start_angle)
+        angle_list.append(-start_angle)#SOMAR 180
         distance_list.append(width_between_tracks)
         for turn in range(max_turns):
-            angle_list.append(-start_angle)
-            distance_list.append(width_between_tracks)
             if turn%2==0:
-                angle_list.append(start_angle+90)
-                distance_list.append(max_length)
-            else:
                 angle_list.append(start_angle-90)
                 distance_list.append(max_length)
+            else:
+                angle_list.append(start_angle+90)
+                distance_list.append(max_length)
+            angle_list.append(-start_angle)
+            distance_list.append(width_between_tracks)
         
         drone = create_drone_generic_pattern(
             self.timestep_total,

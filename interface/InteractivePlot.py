@@ -4,8 +4,17 @@ import contextily as cx
 from shapely.geometry import Polygon
 import geopandas as gpd
 import configparser
-from matplotlib.widgets import Button, RadioButtons, TextBox
+from matplotlib.widgets import Button, RadioButtons
 import os
+
+#Labels para interface em português
+label_dict = {
+    'Circular':'circular',
+    'Angular':'angular',
+    'Trator':'tractor',
+    'Estático':'static',
+    'Quadrangular':'square'
+}
 
 class InteractivePlot:
     def __init__(self, xml_file):
@@ -40,7 +49,7 @@ class InteractivePlot:
 
     def on_click(self, event):
         # Ignore clicks outside the map area or within UI elements
-        if event.inaxes and event.inaxes not in [self.radio.ax, self.text_box.ax, self.button]:
+        if event.inaxes and event.inaxes not in [self.radio.ax, self.button]:
             x, y = event.xdata, event.ydata
             # Check if the coordinates are within the map bounds
             if self.min_x <= x <= self.max_x and self.min_y <= y <= self.max_y:
@@ -55,7 +64,7 @@ class InteractivePlot:
         plt.close()
 
     def on_pattern_select(self, label):
-        self.selected_pattern = label
+        self.selected_pattern = label_dict[label]
         print(f"Selected pattern: {self.selected_pattern}")
 
     def generate_config(self):
@@ -152,13 +161,8 @@ class InteractivePlot:
 
         # Add pattern selection radio buttons
         ax_radio = plt.axes([0.8, 0.1, 0.15, 0.2])
-        self.radio = RadioButtons(ax_radio, ("circular", "angular", "tractor", "static", "square"))
+        self.radio = RadioButtons(ax_radio, list(label_dict.keys()))
         self.radio.on_clicked(self.on_pattern_select)
-
-        # Add text box for vehicle ID input
-        ax_textbox = plt.axes([0.8, 0.05, 0.1, 0.05])
-        self.text_box = TextBox(ax_textbox, 'Vehicle ID:', initial="")
-        self.text_box.on_submit(lambda text: print(f"Vehicle ID set to: {text}"))
 
         # Add confirm button
         ax_button = plt.axes([0.8, 0.01, 0.1, 0.075])
